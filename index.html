@@ -1,1 +1,3471 @@
-Hello, World!
+<style>
+html {
+  scroll-behavior: smooth;
+}
+* {
+  box-sizing: border-box;
+}
+  body {
+    font: 16px Arial;
+  }
+
+  /*the container must be positioned relative:*/
+  .autocomplete {
+    position: relative;
+    display: inline-block;
+  }
+
+  input {
+    border: 1px solid transparent;
+    background-color: #f1f1f1;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  input[type=text] {
+    background-color: #f1f1f1;
+    width: 100%;
+  }
+
+  input[type=submit] {
+    background-color: DodgerBlue;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+  }
+
+  /*when hovering an item:*/
+  .autocomplete-items div:hover {
+    background-color: #e9e9e9;
+  }
+
+  /*when navigating through the items using the arrow keys:*/
+  .autocomplete-active {
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+  }
+</style>
+
+
+{% extends "layout.html" %}
+
+{% block main %}
+
+<form autocomplete="off" action="/eu4" enctype="multipart/form-data" method="post">
+
+  <div class="autocomplete">
+
+    <div class="autocomplete">
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+          <b><p align="center">EU4 WIKI NATIONAL IDEA FORMATTER</p></b>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+          <p>Please enter the following information. Once the information has been entered, click "Generate Code." This will create code that can be used on the <a href="https://eu4.paradoxwikis.com/National_ideas">EU4 National Ideas Wiki page</a>. For this process, you can either upload a country file or fill out the form manually.</p>
+          <hr>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-2">
+          <input id = "countryTag" type="text" name = "countryTag" class="form-control" placeholder="Tag | EX: SWE">
+        </div>
+
+        <div class="col">
+          <!--
+          <i>Only accepts "00_country_ideas.txt".</i>
+          Select a file: <input type="file" id = "myFile" name="myFile">
+          <button type="button" onclick="generateCodeFromFile()" style="float: right;" class="btn btn-primary btn-sm">Upload File</button>
+          -->
+          <div class="input-group">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="myFile" name="myFile" aria-describedby="inputGroupFileAddon04">
+              <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+            </div>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" onclick="generateCodeFromFile()" id="inputGroupFileAddon04">Generate</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <hr>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-2">
+
+          <b>VERSION #</b>
+
+        </div>
+
+        <div class="col">
+
+          <b>COUNTRY</b>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-2">
+
+          Version:
+          <input id = "versionNumber" type="text" name = "versionNumber" class="form-control" placeholder="EX: 1.29" required>
+
+        </div>
+
+        <div class="col-5">
+
+          Country Name:
+          <input id = "countryName" type="text" name = "countryName" class="form-control" placeholder="EX: Sweden" required>
+
+        </div>
+
+        <div class="col-5">
+
+          Demonym:
+          <input id = "countryDemonym" type="text" name = "countryDemonym" class="form-control" placeholder="EX: Swedish" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+          <b>TRADITIONS</b>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-2">
+
+          Value:
+          <input id = "traditionValue1" type="text" name = "traditionValue1" class="form-control" placeholder="EX: -15%" style="color:green; font-weight: bold;" required>
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "traditionEffect1" type="text" name = "traditionEffect1" class="form-control" placeholder="EX: Mercenary maintenance" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-2">
+
+          Value:
+          <input id = "traditionValue2" type="text" name = "traditionValue2" class="form-control" placeholder="EX: +20%" style="color:green; font-weight: bold;"required>
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "traditionEffect2" type="text" name = "traditionEffect2" class="form-control" placeholder="EX: Infantry combat ability" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+          <b>IDEAS</b>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-5">
+
+          Name:
+          <input id = "ideaName1" type="text" name = "ideaName1" class="form-control" placeholder="EX: Kung och Riksdag" required>
+
+        </div>
+
+        <div class="col-2">
+
+          Value:
+          <input type="text" id = "ideaValue1" name = "ideaValue1" class="form-control" placeholder="EX: +1" style="color:green; font-weight: bold;"required>
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "ideaEffect1" type="text" name = "ideaEffect1" class="form-control" placeholder="EX: Yearly legitimacy" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container" id="container1">
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+            <button type="button" name = "containerButton1" id = "containerButton1" onclick="myFunction(1)" style="float: right;" class="btn btn-primary btn-sm">Add New Optional Effect</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-5">
+
+          Name:
+          <input id = "ideaName2" type="text" name = "ideaName2" class="form-control" required>
+
+        </div>
+
+        <div class="col-2">
+
+          Value:
+          <input type="text" id = "ideaValue2" name = "ideaValue2" class="form-control" style="color:green; font-weight: bold;" required>
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "ideaEffect2" type="text" name = "ideaEffect2" class="form-control" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container" id="container2">
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+            <button type="button" name = "containerButton2" id = "containerButton2" onclick="myFunction(2)" style="float: right;" class="btn btn-primary btn-sm">Add New Optional Effect</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-5">
+
+          Name:
+          <input id = "ideaName3" type="text" name = "ideaName3" class="form-control" required>
+
+        </div>
+
+        <div class="col-2">
+
+          Value:
+          <input type="text" id = "ideaValue3" name = "ideaValue3" class="form-control" style="color:green; font-weight: bold;" required>
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "ideaEffect3" type="text" name = "ideaEffect3" class="form-control" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container" id="container3">
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+            <button type="button" name = "containerButton3" id = "containerButton3" onclick="myFunction(3)" style="float: right;" class="btn btn-primary btn-sm">Add New Optional Effect</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-5">
+
+          Name:
+          <input id = "ideaName4" type="text" name = "ideaName4" class="form-control" required>
+
+        </div>
+
+        <div class="col-2">
+
+          Value:
+          <input type="text" id = "ideaValue4" name = "ideaValue4" class="form-control" style="color:green; font-weight: bold;" required>
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "ideaEffect4" type="text" name = "ideaEffect4" class="form-control" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container" id="container4">
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+            <button type="button" name = "containerButton4" id = "containerButton4" onclick="myFunction(4)" style="float: right;" class="btn btn-primary btn-sm">Add New Optional Effect</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-5">
+
+          Name:
+          <input id = "ideaName5" type="text" name = "ideaName5" class="form-control" required>
+
+        </div>
+
+        <div class="col-2">
+
+          Value:
+          <input type="text" id = "ideaValue5" name = "ideaValue5" class="form-control" style="color:green; font-weight: bold;" required>
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "ideaEffect5" type="text" name = "ideaEffect5" class="form-control" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container" id="container5">
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+            <button type="button" name = "containerButton5" id = "containerButton5" onclick="myFunction(5)" style="float: right;" class="btn btn-primary btn-sm">Add New Optional Effect</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-5">
+
+          Name:
+          <input id = "ideaName6" type="text" name = "ideaName6" class="form-control" required>
+
+        </div>
+
+        <div class="col-2">
+
+          Value:
+          <input type="text" id = "ideaValue6" name = "ideaValue6" class="form-control" style="color:green; font-weight: bold;" required>
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "ideaEffect6" type="text" name = "ideaEffect6" class="form-control" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container" id="container6">
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+            <button type="button" name = "containerButton6" id = "containerButton6" onclick="myFunction(6)" style="float: right;" class="btn btn-primary btn-sm">Add New Optional Effect</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-5">
+
+          Name:
+          <input id = "ideaName7" type="text" name = "ideaName7" class="form-control" required>
+
+        </div>
+
+        <div class="col-2">
+
+          Value:
+          <input type="text" id = "ideaValue7" name = "ideaValue7" class="form-control" style="color:green; font-weight: bold;" required>
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "ideaEffect7" type="text" name = "ideaEffect7" class="form-control" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container" id="container7">
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+            <button type="button" name = "containerButton7" id = "containerButton7" onclick="myFunction(7)" style="float: right;" class="btn btn-primary btn-sm">Add New Optional Effect</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+          <b>AMBITION</b>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-2">
+
+          Value:
+          <input type="text" id = "ambitionValue" name = "ambitionValue" class="form-control" style="color:green; font-weight: bold;" required>
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "ambitionEffect" type="text" name = "ambitionEffect" class="form-control" required>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-5">
+          <br>
+          <font color="grey"><p align="right">Optional Additional Effect</p></font>
+
+        </div>
+
+        <div class="col-2">
+
+          Value:
+          <input type="text" id = "ambitionValueBonus" name = "ambitionValueBonus" class="form-control" style="color:green; font-weight: bold;">
+
+        </div>
+
+        <div class="col">
+
+          Effect:
+          <input id = "ambitionEffectBonus" type="text" name = "ambitionEffectBonus" class="form-control">
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col">
+
+          <!--<button type="submit" class="btn btn-primary">Submit</button>-->
+          <button type="button" name = "codeButton" id = "codeButton" onclick="generateCode()" style="float: right;" class="btn btn-primary btn-lg btn-block">GENERATE WIKI CODE</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <br><br>
+
+  <div class="container">
+
+    <div id = "alertContainer" style='visibility:hidden;' class="alert alert-primary" role="alert">
+      <textarea class="form-control" rows="5" id="codeText"></textarea>
+    </div>
+
+  </div>
+
+</form>
+<script>
+
+var counter1 = 0;
+var counter2 = 0;
+var counter3 = 0;
+var counter4 = 0;
+var counter5 = 0;
+var counter6 = 0;
+var counter7 = 0;
+
+var maxAdditions = 3;
+
+var tagArray = [
+    {abb:"REB", full:"Rebels"},
+    {abb:"PIR", full:"Pirates"},
+    {abb:"NAT", full:"Natives"},
+    {abb:"SWE", full:"Sweden"},
+    {abb:"DAN", full:"Denmark"},
+    {abb:"FIN", full:"Finland"},
+    {abb:"GOT", full:"Gotland"},
+    {abb:"NOR", full:"Norway"},
+    {abb:"SHL", full:"Holstein"},
+    {abb:"SCA", full:"Scandinavia"},
+    {abb:"EST", full:"Estonia"},
+    {abb:"LVA", full:"Livonia"},
+    {abb:"SMI", full:"Sami"},
+    {abb:"KRL", full:"Karelia"},
+    {abb:"ICE", full:"Iceland"},
+    {abb:"ACH", full:"Achaea"},
+    {abb:"ALB", full:"Albania"},
+    {abb:"ATH", full:"Athens"},
+    {abb:"BOS", full:"Bosnia"},
+    {abb:"BUL", full:"Bulgaria"},
+    {abb:"BYZ", full:"Byzantine Empire"},
+    {abb:"CEP", full:"Corfu"},
+    {abb:"CRO", full:"Croatia"},
+    {abb:"CRT", full:"Crete"},
+    {abb:"CYP", full:"Cyprus"},
+    {abb:"EPI", full:"Epirus"},
+    {abb:"GRE", full:"Greece"},
+    {abb:"KNI", full:"Knights"},
+    {abb:"MOE", full:"Morea"},
+    {abb:"MOL", full:"Moldavia"},
+    {abb:"MON", full:"Montenegro"},
+    {abb:"NAX", full:"Naxos"},
+    {abb:"RAG", full:"Ragusa"},
+    {abb:"RMN", full:"Romania"},
+    {abb:"SER", full:"Serbia"},
+    {abb:"TRA", full:"Transylvania"},
+    {abb:"WAL", full:"Wallachia"},
+    {abb:"HUN", full:"Hungary"},
+    {abb:"SLO", full:"Slovakia"},
+    {abb:"TUR", full:"Ottomans"},
+    {abb:"CNN", full:"Connacht"},
+    {abb:"CRN", full:"Cornwall"},
+    {abb:"ENG", full:"England"},
+    {abb:"LEI", full:"Leinster"},
+    {abb:"IRE", full:"Ireland"},
+    {abb:"MNS", full:"Munster"},
+    {abb:"SCO", full:"Scotland"},
+    {abb:"TYR", full:"Tyrone"},
+    {abb:"WLS", full:"Wales"},
+    {abb:"NOL", full:"Northumberland"},
+    {abb:"GBR", full:"Great Britain"},
+    {abb:"MTH", full:"Meath"},
+    {abb:"ULS", full:"Ulster"},
+    {abb:"DMS", full:"Desmond"},
+    {abb:"SLN", full:"Sligo"},
+    {abb:"KID", full:"Kildare"},
+    {abb:"HSC", full:"Highlands"},
+    {abb:"ORD", full:"Ormond"},
+    {abb:"TRY", full:"Tyrconnell"},
+    {abb:"FLY", full:"Faly"},
+    {abb:"MCM", full:"MacCarthy"},
+    {abb:"KOI", full:"Mann"},
+    {abb:"LOI", full:"The Isles"},
+    {abb:"BRZ", full:"Brazil"},
+    {abb:"CAN", full:"Canada"},
+    {abb:"CHL", full:"Chile"},
+    {abb:"COL", full:"Colombia"},
+    {abb:"HAT", full:"Haiti"},
+    {abb:"LAP", full:"La Plata"},
+    {abb:"LOU", full:"Louisiana"},
+    {abb:"MEX", full:"Mexico"},
+    {abb:"PEU", full:"Peru"},
+    {abb:"PRG", full:"Paraguay"},
+    {abb:"QUE", full:"Quebec"},
+    {abb:"CAM", full:"United Central America"},
+    {abb:"USA", full:"USA"},
+    {abb:"VNZ", full:"Venezuela"},
+    {abb:"AUS", full:"Australia"},
+    {abb:"CAL", full:"California"},
+    {abb:"TEX", full:"Texas"},
+    {abb:"DNZ", full:"Danzig"},
+    {abb:"KRA", full:"Krakow"},
+    {abb:"LIT", full:"Lithuania"},
+    {abb:"LIV", full:"Livonian Order"},
+    {abb:"MAZ", full:"Mazovia"},
+    {abb:"POL", full:"Poland"},
+    {abb:"PRU", full:"Prussia"},
+    {abb:"KUR", full:"Kurland"},
+    {abb:"RIG", full:"Riga"},
+    {abb:"TEU", full:"Teutonic Order"},
+    {abb:"PLC", full:"The Commonwealth"},
+    {abb:"VOL", full:"Volyn"},
+    {abb:"KIE", full:"Kiev"},
+    {abb:"CHR", full:"Chernigov"},
+    {abb:"OKA", full:"Oka"},
+    {abb:"ALE", full:"Alencon"},
+    {abb:"ALS", full:"Alsace"},
+    {abb:"AMG", full:"Armagnac"},
+    {abb:"AUV", full:"Auvergne"},
+    {abb:"AVI", full:"Avignon"},
+    {abb:"BOU", full:"Bourbonnais"},
+    {abb:"BRI", full:"Brittany"},
+    {abb:"BUR", full:"Burgundy"},
+    {abb:"CHP", full:"Champagne"},
+    {abb:"COR", full:"Corsica"},
+    {abb:"DAU", full:"Dauphine"},
+    {abb:"FOI", full:"Foix"},
+    {abb:"FRA", full:"France"},
+    {abb:"GUY", full:"Gascony"},
+    {abb:"NEV", full:"Nevers"},
+    {abb:"NRM", full:"Normandy"},
+    {abb:"ORL", full:"Orleans"},
+    {abb:"PIC", full:"Picardy"},
+    {abb:"PRO", full:"Provence"},
+    {abb:"SPI", full:"Sardinia Piedmont"},
+    {abb:"TOU", full:"Toulouse"},
+    {abb:"BER", full:"Berry"},
+    {abb:"AAC", full:"Aachen"},
+    {abb:"ANH", full:"Anhalt"},
+    {abb:"ANS", full:"Ansbach"},
+    {abb:"AUG", full:"Augsburg"},
+    {abb:"BAD", full:"Baden"},
+    {abb:"BAV", full:"Bavaria"},
+    {abb:"BOH", full:"Bohemia"},
+    {abb:"BRA", full:"Brandenburg"},
+    {abb:"BRE", full:"Bremen"},
+    {abb:"BRU", full:"Brunswick"},
+    {abb:"EFR", full:"East Frisia"},
+    {abb:"FRN", full:"Frankfurt"},
+    {abb:"GER", full:"Germany"},
+    {abb:"HAB", full:"Austria"},
+    {abb:"HAM", full:"Hamburg"},
+    {abb:"HAN", full:"Hannover"},
+    {abb:"HES", full:"Hessen"},
+    {abb:"HLR", full:"Holy Roman Empire"},
+    {abb:"KLE", full:"Kleves"},
+    {abb:"KOL", full:"Cologne"},
+    {abb:"LAU", full:"Lauenburg"},
+    {abb:"LOR", full:"Lorraine"},
+    {abb:"LUN", full:"Luneburg"},
+    {abb:"MAG", full:"Magdeburg"},
+    {abb:"MAI", full:"Mainz"},
+    {abb:"MEI", full:"Meissen"},
+    {abb:"MKL", full:"Mecklenburg"},
+    {abb:"MUN", full:"Munster"},
+    {abb:"MVA", full:"Moravia"},
+    {abb:"OLD", full:"Oldenburg"},
+    {abb:"PAL", full:"The Palatinate"},
+    {abb:"POM", full:"Pommerania"},
+    {abb:"SAX", full:"Saxony"},
+    {abb:"SIL", full:"Silesia"},
+    {abb:"SLZ", full:"Salzburg"},
+    {abb:"STY", full:"Styria"},
+    {abb:"SWI", full:"Schweiz"},
+    {abb:"THU", full:"Thuringia"},
+    {abb:"TIR", full:"Tirol"},
+    {abb:"TRI", full:"Trier"},
+    {abb:"ULM", full:"Ulm"},
+    {abb:"WBG", full:"Wurzburg"},
+    {abb:"WES", full:"Westfalia"},
+    {abb:"WUR", full:"Wurttemberg"},
+    {abb:"NUM", full:"Nuremberg"},
+    {abb:"MEM", full:"Memmingen"},
+    {abb:"VER", full:"Verden"},
+    {abb:"NSA", full:"Nassau"},
+    {abb:"RVA", full:"Ravensburg"},
+    {abb:"DTT", full:"Dithmarschen"},
+    {abb:"ARA", full:"Aragon"},
+    {abb:"CAS", full:"Castille"},
+    {abb:"CAT", full:"Catalunya"},
+    {abb:"GRA", full:"Granada"},
+    {abb:"NAV", full:"Navarra"},
+    {abb:"POR", full:"Portugal"},
+    {abb:"SPA", full:"Spain"},
+    {abb:"GAL", full:"Galicia"},
+    {abb:"LON", full:"Leon"},
+    {abb:"ADU", full:"Andalusia"},
+    {abb:"VAL", full:"Valencia"},
+    {abb:"ASU", full:"Asturias"},
+    {abb:"MJO", full:"Majorca"},
+    {abb:"AQU", full:"Aquileia"},
+    {abb:"ETR", full:"Etruria"},
+    {abb:"FER", full:"Ferrara"},
+    {abb:"GEN", full:"Genoa"},
+    {abb:"ITA", full:"Italy"},
+    {abb:"MAN", full:"Mantua"},
+    {abb:"MLO", full:"Milan"},
+    {abb:"MOD", full:"Modena"},
+    {abb:"NAP", full:"Naples"},
+    {abb:"PAP", full:"Papal"},
+    {abb:"PAR", full:"Parma"},
+    {abb:"PIS", full:"Pisa"},
+    {abb:"SAR", full:"Sardinia"},
+    {abb:"SAV", full:"Savoy"},
+    {abb:"SIC", full:"Sicily"},
+    {abb:"SIE", full:"Siena"},
+    {abb:"TUS", full:"Tuscany"},
+    {abb:"URB", full:"Urbino"},
+    {abb:"VEN", full:"Venice"},
+    {abb:"MFA", full:"Montferrat"},
+    {abb:"LUC", full:"Lucca"},
+    {abb:"LAN", full:"Florence"},
+    {abb:"JAI", full:"Malta"},
+    {abb:"BRB", full:"Brabant"},
+    {abb:"FLA", full:"Flanders"},
+    {abb:"FRI", full:"Friesland"},
+    {abb:"GEL", full:"Gelre"},
+    {abb:"HAI", full:"Hainaut"},
+    {abb:"HOL", full:"Holland"},
+    {abb:"LIE", full:"Liege"},
+    {abb:"LUX", full:"Luxembourg"},
+    {abb:"NED", full:"Netherlands"},
+    {abb:"UTR", full:"Utrecht"},
+    {abb:"ARM", full:"Armenia"},
+    {abb:"AST", full:"Astrakhan"},
+    {abb:"CRI", full:"Crimea"},
+    {abb:"GEO", full:"Georgia"},
+    {abb:"KAZ", full:"Kazan"},
+    {abb:"MOS", full:"Muscowy"},
+    {abb:"NOV", full:"Novgorod"},
+    {abb:"PSK", full:"Pskov"},
+    {abb:"QAS", full:"Qasim"},
+    {abb:"RUS", full:"Russia"},
+    {abb:"RYA", full:"Ryazan"},
+    {abb:"TVE", full:"Tver"},
+    {abb:"UKR", full:"Ukraine"},
+    {abb:"YAR", full:"Yaroslavl"},
+    {abb:"ZAZ", full:"Zaporozhie"},
+    {abb:"NOG", full:"Nogai"},
+    {abb:"SIB", full:"Sibir"},
+    {abb:"PLT", full:"Polotsk"},
+    {abb:"PRM", full:"Perm"},
+    {abb:"FEO", full:"Theodoro"},
+    {abb:"BSH", full:"Bashkiria"},
+    {abb:"BLO", full:"Beloozero"},
+    {abb:"RSO", full:"Rostov"},
+    {abb:"GOL", full:"Great Horde"},
+    {abb:"GLH", full:"Golden Horde"},
+    {abb:"ADE", full:"Aden"},
+    {abb:"ALH", full:"Haasa"},
+    {abb:"ANZ", full:"Anizah"},
+    {abb:"ARB", full:"Arabia"},
+    {abb:"ARD", full:"Ardalan"},
+    {abb:"BHT", full:"Bohtan"},
+    {abb:"DAW", full:"Dawasir"},
+    {abb:"ERE", full:"Eretna"},
+    {abb:"FAD", full:"Fadl"},
+    {abb:"GRM", full:"Germiyan"},
+    {abb:"HDR", full:"Hadramut"},
+    {abb:"HED", full:"Hedjaz"},
+    {abb:"LEB", full:"Lebanon"},
+    {abb:"MAK", full:"Makuria"},
+    {abb:"MDA", full:"Medina"},
+    {abb:"MFL", full:"Mikhlaf"},
+    {abb:"MHR", full:"Mahra"},
+    {abb:"NAJ", full:"Najd"},
+    {abb:"NJR", full:"Najran"},
+    {abb:"OMA", full:"Oman"},
+    {abb:"RAS", full:"Rassids"},
+    {abb:"SHM", full:"Shammar"},
+    {abb:"SHR", full:"Sharjah"},
+    {abb:"SRV", full:"Shirvanshah"},
+    {abb:"YAS", full:"Yas"},
+    {abb:"YEM", full:"Yemen"},
+    {abb:"HSN", full:"Ayyubids"},
+    {abb:"BTL", full:"Bitlis"},
+    {abb:"AKK", full:"Aq Qoyunlu"},
+    {abb:"AYD", full:"Aydin"},
+    {abb:"CND", full:"Candar"},
+    {abb:"DUL", full:"Dulkadir"},
+    {abb:"IRQ", full:"Iraq"},
+    {abb:"KAR", full:"Karaman"},
+    {abb:"SYR", full:"Syria"},
+    {abb:"TRE", full:"Trebizond"},
+    {abb:"SRU", full:"Saruhan"},
+    {abb:"MEN", full:"Mentese"},
+    {abb:"RAM", full:"Ramazan"},
+    {abb:"AVR", full:"Avars"},
+    {abb:"MLK", full:"Kashen"},
+    {abb:"SME", full:"Samtskhe"},
+    {abb:"ARL", full:"Ardabil"},
+    {abb:"MSY", full:"Mushashaiyyah"},
+    {abb:"RUM", full:"Rum"},
+    {abb:"ALG", full:"Algiers"},
+    {abb:"FEZ", full:"Fez"},
+    {abb:"MAM", full:"Burgi"},
+    {abb:"MOR", full:"Morocco"},
+    {abb:"TRP", full:"Tripoli"},
+    {abb:"TUN", full:"Tunisia"},
+    {abb:"EGY", full:"Egypt"},
+    {abb:"KBA", full:"Kabylia"},
+    {abb:"TFL", full:"Tafilalt"},
+    {abb:"SOS", full:"Sus"},
+    {abb:"TLC", full:"Tlemcen"},
+    {abb:"TGT", full:"Touggourt"},
+    {abb:"GHD", full:"Ghadames"},
+    {abb:"FZA", full:"Fezzan"},
+    {abb:"MZB", full:"Mzab"},
+    {abb:"SLE", full:"Sale"},
+    {abb:"TET", full:"Tetouan"},
+    {abb:"MRK", full:"Marrakesh"},
+    {abb:"KZH", full:"Kazakh"},
+    {abb:"KHI", full:"Khiva"},
+    {abb:"SHY", full:"Shaybanid"},
+    {abb:"KOK", full:"Kokkand"},
+    {abb:"BUK", full:"Bukhara"},
+    {abb:"AFG", full:"Afghanistan"},
+    {abb:"KHO", full:"Khorasan"},
+    {abb:"PER", full:"Persia"},
+    {abb:"QAR", full:"Qara Qoyunlu"},
+    {abb:"TIM", full:"Timurid"},
+    {abb:"TRS", full:"Transoxiana"},
+    {abb:"KRY", full:"Gilan"},
+    {abb:"CIR", full:"Circassia"},
+    {abb:"GAZ", full:"Gazikumukh"},
+    {abb:"IME", full:"Imereti"},
+    {abb:"TAB", full:"Tabarestan"},
+    {abb:"ORM", full:"Ormuz"},
+    {abb:"LRI", full:"Luristan"},
+    {abb:"SIS", full:"Sistan"},
+    {abb:"BPI", full:"Biapas"},
+    {abb:"FRS", full:"Fars"},
+    {abb:"KRM", full:"Kerman"},
+    {abb:"YZD", full:"Yazd"},
+    {abb:"ISF", full:"Isfahan"},
+    {abb:"TBR", full:"Tabriz"},
+    {abb:"BSR", full:"Basra"},
+    {abb:"MGR", full:"Maregh"},
+    {abb:"QOM", full:"Qom"},
+    {abb:"AZT", full:"Aztec"},
+    {abb:"CHE", full:"Cherokee"},
+    {abb:"CHM", full:"Chimu"},
+    {abb:"CRE", full:"Creek"},
+    {abb:"HUR", full:"Huron"},
+    {abb:"INC", full:"Inca"},
+    {abb:"IRO", full:"Iroquois"},
+    {abb:"MAY", full:"Maya"},
+    {abb:"SHA", full:"Shawnee"},
+    {abb:"ZAP", full:"Zapotec"},
+    {abb:"ASH", full:"Ashanti"},
+    {abb:"BEN", full:"Benin"},
+    {abb:"ETH", full:"Ethiopia"},
+    {abb:"KON", full:"Kongo"},
+    {abb:"MAL", full:"Mali"},
+    {abb:"NUB", full:"Funj"},
+    {abb:"SON", full:"Songhai"},
+    {abb:"ZAN", full:"Swahili"},
+    {abb:"ZIM", full:"Mutapa"},
+    {abb:"ADA", full:"Adal"},
+    {abb:"HAU", full:"Hausa"},
+    {abb:"KBO", full:"Kanem Bornu"},
+    {abb:"LOA", full:"Loango"},
+    {abb:"OYO", full:"Oyo"},
+    {abb:"SOF", full:"Sofala"},
+    {abb:"SOK", full:"Sokoto"},
+    {abb:"JOL", full:"Jolof"},
+    {abb:"SFA", full:"SofalaSwa"},
+    {abb:"MBA", full:"Mombasa"},
+    {abb:"MLI", full:"Malindi"},
+    {abb:"AJU", full:"Ajuuraan"},
+    {abb:"MDI", full:"Mogadishu"},
+    {abb:"ENA", full:"Eneara"},
+    {abb:"AFA", full:"Afar"},
+    {abb:"ALO", full:"Alodia"},
+    {abb:"DAR", full:"Darfur"},
+    {abb:"GLE", full:"Geledi"},
+    {abb:"HAR", full:"Harar"},
+    {abb:"HOB", full:"Hobyo"},
+    {abb:"KAF", full:"Kaffa"},
+    {abb:"MED", full:"Medri"},
+    {abb:"MJE", full:"Majeerteen"},
+    {abb:"MRE", full:"Marehan"},
+    {abb:"PTE", full:"Pate"},
+    {abb:"WAR", full:"Warsangali"},
+    {abb:"BTI", full:"Semien"},
+    {abb:"BEJ", full:"Beja"},
+    {abb:"JIM", full:"Jima"},
+    {abb:"WLY", full:"Welayta"},
+    {abb:"DAM", full:"Damot"},
+    {abb:"HDY", full:"Hadiya"},
+    {abb:"SOA", full:"Shewa"},
+    {abb:"JJI", full:"Janjero"},
+    {abb:"ABB", full:"Dongola"},
+    {abb:"TYO", full:"Tyo"},
+    {abb:"SYO", full:"Soyo"},
+    {abb:"KSJ", full:"Kasanje"},
+    {abb:"LUB", full:"Luba"},
+    {abb:"LND", full:"Lunda"},
+    {abb:"CKW", full:"Chokwe"},
+    {abb:"KIK", full:"Kikondja"},
+    {abb:"KZB", full:"Kazembe"},
+    {abb:"YAK", full:"Yaka"},
+    {abb:"KLD", full:"Kalundwe"},
+    {abb:"KUB", full:"Kuba"},
+    {abb:"RWA", full:"Rwanda"},
+    {abb:"BUU", full:"Burundi"},
+    {abb:"BUG", full:"Buganda"},
+    {abb:"NKO", full:"Nkore"},
+    {abb:"KRW", full:"Karagwe"},
+    {abb:"BNY", full:"Bunyoro"},
+    {abb:"BSG", full:"Basoga"},
+    {abb:"UBH", full:"Buha"},
+    {abb:"MRA", full:"Maravi"},
+    {abb:"LDU", full:"Lundu"},
+    {abb:"TBK", full:"Tumbuka"},
+    {abb:"MKU", full:"Makua"},
+    {abb:"RZW", full:"Butua"},
+    {abb:"MIR", full:"Merina"},
+    {abb:"SKA", full:"Sakalava"},
+    {abb:"BTS", full:"Betsimisaraka"},
+    {abb:"MFY", full:"Mahafaly"},
+    {abb:"ANT", full:"Antemoro"},
+    {abb:"ANN", full:"Annam"},
+    {abb:"ARK", full:"Arakan"},
+    {abb:"ATJ", full:"Atjeh"},
+    {abb:"AYU", full:"Ayutthaya"},
+    {abb:"BLI", full:"Bali"},
+    {abb:"BAN", full:"Banten"},
+    {abb:"BEI", full:"Brunei"},
+    {abb:"CHA", full:"Champa"},
+    {abb:"CHG", full:"Chagatai"},
+    {abb:"CHK", full:"Champassak"},
+    {abb:"DAI", full:"DaiViet"},
+    {abb:"JAP", full:"Japan"},
+    {abb:"AMA", full:"Amago"},
+    {abb:"ASA", full:"Asakura"},
+    {abb:"CSK", full:"Chosokabe"},
+    {abb:"DTE", full:"Date"},
+    {abb:"HJO", full:"Hojo"},
+    {abb:"HSK", full:"Hosokawa"},
+    {abb:"HTK", full:"Hatakeyama"},
+    {abb:"IKE", full:"Ikeda"},
+    {abb:"IMG", full:"Imagawa"},
+    {abb:"MAE", full:"Maeda"},
+    {abb:"MRI", full:"Mori"},
+    {abb:"ODA", full:"Oda"},
+    {abb:"OTM", full:"Otomo"},
+    {abb:"OUC", full:"Ouchi"},
+    {abb:"SBA", full:"Shiba"},
+    {abb:"SMZ", full:"Shimazu"},
+    {abb:"TKD", full:"Takeda"},
+    {abb:"TKG", full:"Tokugawa"},
+    {abb:"UES", full:"Uesugi"},
+    {abb:"YMN", full:"Yamana"},
+    {abb:"RFR", full:"Nanbu"},
+    {abb:"ASK", full:"Ashikaga"},
+    {abb:"KTB", full:"Kitabatake"},
+    {abb:"ANU", full:"Ainu"},
+    {abb:"AKM", full:"Akamatsu"},
+    {abb:"AKT", full:"Ando"},
+    {abb:"CBA", full:"Chiba"},
+    {abb:"ISK", full:"Isshiki"},
+    {abb:"ITO", full:"Ito"},
+    {abb:"KKC", full:"Kikuchi"},
+    {abb:"KNO", full:"Kono"},
+    {abb:"OGS", full:"Ogasawara"},
+    {abb:"SHN", full:"Shoni"},
+    {abb:"STK", full:"Satake"},
+    {abb:"TKI", full:"Toki"},
+    {abb:"UTN", full:"Utsunomiya"},
+    {abb:"TTI", full:"Tsutsui"},
+    {abb:"KHA", full:"Mongolia"},
+    {abb:"KHM", full:"Khmer"},
+    {abb:"KOR", full:"Korea"},
+    {abb:"LNA", full:"Lan Na"},
+    {abb:"LUA", full:"Luang Prabang"},
+    {abb:"LXA", full:"Lan Xang"},
+    {abb:"MAJ", full:"Majapahit"},
+    {abb:"MCH", full:"Manchu"},
+    {abb:"MKS", full:"Makassar"},
+    {abb:"MLC", full:"Malacca"},
+    {abb:"MNG", full:"Ming"},
+    {abb:"MTR", full:"Mataram"},
+    {abb:"OIR", full:"Oirat"},
+    {abb:"PAT", full:"Pattani"},
+    {abb:"PEG", full:"Pegu"},
+    {abb:"QNG", full:"Qing"},
+    {abb:"RYU", full:"Ryukyu"},
+    {abb:"SST", full:"Shan"},
+    {abb:"SUK", full:"Sukhothai"},
+    {abb:"SUL", full:"Sulu"},
+    {abb:"TAU", full:"Taungu"},
+    {abb:"TIB", full:"Tibet"},
+    {abb:"TOK", full:"Tonkin"},
+    {abb:"VIE", full:"Vientiane"},
+    {abb:"CZH", full:"Zhou"},
+    {abb:"CSH", full:"Shun"},
+    {abb:"CXI", full:"Xi"},
+    {abb:"YUA", full:"Great Yuan"},
+    {abb:"FRM", full:"Formosa"},
+    {abb:"ILK", full:"Ilkhanate"},
+    {abb:"KLM", full:"Kalmyk"},
+    {abb:"MGE", full:"Mongol Empire"},
+    {abb:"SOO", full:"So"},
+    {abb:"NVK", full:"Nivkh"},
+    {abb:"SOL", full:"Solon"},
+    {abb:"EJZ", full:"East Jianzhou"},
+    {abb:"NHX", full:"North Haixi"},
+    {abb:"MYR", full:"Yeren"},
+    {abb:"MHX", full:"Haixi"},
+    {abb:"MJZ", full:"Jianzhou"},
+    {abb:"KRC", full:"Khorchin"},
+    {abb:"KLK", full:"Khalkha"},
+    {abb:"HMI", full:"Karadel"},
+    {abb:"ZUN", full:"Zunghar"},
+    {abb:"KAS", full:"Yarkand"},
+    {abb:"CHH", full:"Chahar"},
+    {abb:"KSD", full:"Khoshuud"},
+    {abb:"SYG", full:"Sarigyogir"},
+    {abb:"UTS", full:"Utsang"},
+    {abb:"KAM", full:"Mdokhams"},
+    {abb:"GUG", full:"Guge"},
+    {abb:"PHA", full:"Phagmodrupa"},
+    {abb:"CDL", full:"Dali"},
+    {abb:"CYI", full:"Yi"},
+    {abb:"CMI", full:"Miao"},
+    {abb:"MIN", full:"Min"},
+    {abb:"YUE", full:"Yue"},
+    {abb:"SHU", full:"Shu"},
+    {abb:"NNG", full:"Ning"},
+    {abb:"CHC", full:"Chu"},
+    {abb:"TNG", full:"Tang"},
+    {abb:"WUU", full:"Wu"},
+    {abb:"QIC", full:"Qi"},
+    {abb:"YAN", full:"Yan"},
+    {abb:"JIN", full:"Jin"},
+    {abb:"LNG", full:"Liang"},
+    {abb:"QIN", full:"Qin"},
+    {abb:"HUA", full:"Huai"},
+    {abb:"CGS", full:"Changsheng"},
+    {abb:"BAL", full:"Baluchistan"},
+    {abb:"BNG", full:"Bengal"},
+    {abb:"BIJ", full:"Bijapur"},
+    {abb:"BAH", full:"Bahmanis"},
+    {abb:"DLH", full:"Delhi"},
+    {abb:"GOC", full:"Golconda"},
+    {abb:"DEC", full:"Deccan"},
+    {abb:"MAR", full:"Marathas"},
+    {abb:"MUG", full:"Mughal"},
+    {abb:"MYS", full:"Mysore"},
+    {abb:"VIJ", full:"Vijaynagara"},
+    {abb:"AHM", full:"Ahmadnagar"},
+    {abb:"ASS", full:"Assam"},
+    {abb:"GUJ", full:"Gujarat"},
+    {abb:"JNP", full:"Jaunpur"},
+    {abb:"MAD", full:"Madurai"},
+    {abb:"MLW", full:"Malwa"},
+    {abb:"MAW", full:"Marwar"},
+    {abb:"MER", full:"Mewar"},
+    {abb:"MUL", full:"Multan"},
+    {abb:"NAG", full:"Nagpur"},
+    {abb:"NPL", full:"Nepal"},
+    {abb:"ORI", full:"Orissa"},
+    {abb:"PUN", full:"Punjab"},
+    {abb:"SND", full:"Sind"},
+    {abb:"BRR", full:"Berar"},
+    {abb:"JAN", full:"Jangladesh"},
+    {abb:"KRK", full:"Carnatic"},
+    {abb:"GDW", full:"Gondwana"},
+    {abb:"GRJ", full:"Garjat"},
+    {abb:"GWA", full:"Gwalior"},
+    {abb:"DHU", full:"Dhundhar"},
+    {abb:"KSH", full:"Kashmir"},
+    {abb:"KLN", full:"Keladi"},
+    {abb:"KHD", full:"Khandesh"},
+    {abb:"ODH", full:"Oudh"},
+    {abb:"VND", full:"Venad"},
+    {abb:"MAB", full:"Malabar"},
+    {abb:"MEW", full:"Mewat"},
+    {abb:"BDA", full:"Baroda"},
+    {abb:"BST", full:"Bastar"},
+    {abb:"BHU", full:"Bhutan"},
+    {abb:"BND", full:"Bundelkhand"},
+    {abb:"CEY", full:"Ceylon"},
+    {abb:"JSL", full:"Jaisalmer"},
+    {abb:"KAC", full:"Kachar"},
+    {abb:"KMT", full:"Koch"},
+    {abb:"KGR", full:"Kangra"},
+    {abb:"KAT", full:"Kathiawar"},
+    {abb:"KOC", full:"Kochin"},
+    {abb:"MLB", full:"Manipur"},
+    {abb:"HAD", full:"Hadoti"},
+    {abb:"NGA", full:"Nagaur"},
+    {abb:"RMP", full:"Rohilkandh"},
+    {abb:"LDK", full:"Ladakh"},
+    {abb:"BGL", full:"Bagelkhand"},
+    {abb:"JFN", full:"Jaffna"},
+    {abb:"PTA", full:"Patiala"},
+    {abb:"GHR", full:"Garhwal"},
+    {abb:"CHD", full:"Chanda"},
+    {abb:"NGP", full:"Jharkhand"},
+    {abb:"JAJ", full:"Janjira"},
+    {abb:"TRT", full:"Tirhut"},
+    {abb:"CMP", full:"RewaKantha"},
+    {abb:"BGA", full:"Baglana"},
+    {abb:"TPR", full:"Tripura"},
+    {abb:"SDY", full:"Sadiya"},
+    {abb:"BHA", full:"Bharat"},
+    {abb:"YOR", full:"Andhra"},
+    {abb:"DGL", full:"Maldives"},
+    {abb:"MBL", full:"Bishnupur"},
+    {abb:"SKK", full:"Sikkim"},
+    {abb:"IDR", full:"Idar"},
+    {abb:"JLV", full:"Jhalavad"},
+    {abb:"PTL", full:"Palitana"},
+    {abb:"NVR", full:"Navanagar"},
+    {abb:"RJK", full:"Rajkot"},
+    {abb:"JGD", full:"Junagarh"},
+    {abb:"PRB", full:"Porbandar"},
+    {abb:"PAN", full:"Panna"},
+    {abb:"KLP", full:"Kalpi"},
+    {abb:"SBP", full:"Sambalpur"},
+    {abb:"PTT", full:"Patna"},
+    {abb:"RTT", full:"Ratanpur"},
+    {abb:"KLH", full:"Kalahandi"},
+    {abb:"KJH", full:"Keonhjar"},
+    {abb:"PRD", full:"Parlakhimidi"},
+    {abb:"JPR", full:"Jeypore"},
+    {abb:"SRG", full:"Surguja"},
+    {abb:"KND", full:"Kandy"},
+    {abb:"TLG", full:"Telingana"},
+    {abb:"KLT", full:"Kolathunad"},
+    {abb:"DNG", full:"Dang"},
+    {abb:"DTI", full:"Doti"},
+    {abb:"GRK", full:"Gorkha"},
+    {abb:"JML", full:"Jumla"},
+    {abb:"LWA", full:"Limbuwan"},
+    {abb:"MKP", full:"Makwanpur"},
+    {abb:"SRM", full:"Sirmur"},
+    {abb:"KTU", full:"Kathmandu"},
+    {abb:"KMN", full:"Kumaon"},
+    {abb:"GNG", full:"Gingee"},
+    {abb:"TNJ", full:"Tanjore"},
+    {abb:"SRH", full:"Sirhind"},
+    {abb:"RJP", full:"Rajputana"},
+    {abb:"BAR", full:"Bar"},
+    {abb:"HSA", full:"Hansa"},
+    {abb:"SMO", full:"Smolensk"},
+    {abb:"NZH", full:"Nizhny Novgorod"},
+    {abb:"KOJ", full:"Jerusalem"},
+    {abb:"MSA", full:"Malaya"},
+    {abb:"HIN", full:"Hindustan"},
+    {abb:"ABE", full:"Abenaki"},
+    {abb:"APA", full:"Apache"},
+    {abb:"ASI", full:"Assiniboine"},
+    {abb:"BLA", full:"Blackfoot"},
+    {abb:"CAD", full:"Caddo"},
+    {abb:"CHI", full:"Chickasaw"},
+    {abb:"CHO", full:"Choctaw"},
+    {abb:"CHY", full:"Cheyenne"},
+    {abb:"COM", full:"Comanche"},
+    {abb:"FOX", full:"Fox"},
+    {abb:"ILL", full:"Illinewek"},
+    {abb:"LEN", full:"Lenape"},
+    {abb:"MAH", full:"Mahican"},
+    {abb:"MIK", full:"Mikmaq"},
+    {abb:"MMI", full:"Miami"},
+    {abb:"NAH", full:"Navajo"},
+    {abb:"OJI", full:"Ojibwa"},
+    {abb:"OSA", full:"Osage"},
+    {abb:"OTT", full:"Ottawa"},
+    {abb:"PAW", full:"Pawnee"},
+    {abb:"PEQ", full:"Pequot"},
+    {abb:"PIM", full:"Pima"},
+    {abb:"POT", full:"Potawatomi"},
+    {abb:"POW", full:"Powhatan"},
+    {abb:"PUE", full:"Pueblo"},
+    {abb:"SHO", full:"Shoshone"},
+    {abb:"SIO", full:"Sioux"},
+    {abb:"SUS", full:"Susquehannock"},
+    {abb:"WCR", full:"Cree"},
+    {abb:"AIR", full:"Air"},
+    {abb:"BON", full:"Bonoman"},
+    {abb:"DAH", full:"Dahomey"},
+    {abb:"DGB", full:"Dagbon"},
+    {abb:"FUL", full:"Fulo"},
+    {abb:"JNN", full:"Jenne"},
+    {abb:"KAN", full:"Kano"},
+    {abb:"KBU", full:"Kaabu"},
+    {abb:"KNG", full:"Kong"},
+    {abb:"KTS", full:"Katsina"},
+    {abb:"MSI", full:"Mossi"},
+    {abb:"NUP", full:"Nupe"},
+    {abb:"TMB", full:"Timbuktu"},
+    {abb:"YAO", full:"Yao"},
+    {abb:"YAT", full:"Yatenga"},
+    {abb:"ZAF", full:"Zafunu"},
+    {abb:"ZZZ", full:"Zazzau"},
+    {abb:"NDO", full:"Ndongo"},
+    {abb:"AVA", full:"Ava"},
+    {abb:"HSE", full:"Hsenwi"},
+    {abb:"JOH", full:"Johor"},
+    {abb:"KED", full:"Kedah"},
+    {abb:"LIG", full:"Ligor"},
+    {abb:"MPH", full:"Muan Phuang"},
+    {abb:"MYA", full:"Mong Yang"},
+    {abb:"PRK", full:"Perak"},
+    {abb:"MMA", full:"Mong Mao"},
+    {abb:"MKA", full:"Mong Kawng"},
+    {abb:"MPA", full:"Mong Pai"},
+    {abb:"MNI", full:"Mong Nai"},
+    {abb:"KAL", full:"Kale"},
+    {abb:"HSI", full:"Hsipaw"},
+    {abb:"BPR", full:"Prome"},
+    {abb:"CHU", full:"Chukchi"},
+    {abb:"HOD", full:"Hodyntsy"},
+    {abb:"CHV", full:"Chavchuveny"},
+    {abb:"KMC", full:"Kamchadals"},
+    {abb:"BRT", full:"Buryats"},
+    {abb:"ARP", full:"Arapaho"},
+    {abb:"CLM", full:"Colima"},
+    {abb:"CNK", full:"Chinook"},
+    {abb:"COC", full:"Cocomes"},
+    {abb:"HDA", full:"Haida"},
+    {abb:"ITZ", full:"Itza"},
+    {abb:"KIC", full:"Kiche"},
+    {abb:"KIO", full:"Kiowa"},
+    {abb:"MIX", full:"Mixtec"},
+    {abb:"SAL", full:"Salish"},
+    {abb:"TAR", full:"Tarascan"},
+    {abb:"TLA", full:"Tlapanec"},
+    {abb:"TLX", full:"Tlaxcala"},
+    {abb:"TOT", full:"Totonac"},
+    {abb:"WIC", full:"Wichita"},
+    {abb:"XIU", full:"Xiu"},
+    {abb:"BLM", full:"Blambangan"},
+    {abb:"BTN", full:"Buton"},
+    {abb:"CRB", full:"Cirebon"},
+    {abb:"DMK", full:"Demak"},
+    {abb:"PGR", full:"Pagarruyung"},
+    {abb:"PLB", full:"Palembang"},
+    {abb:"PSA", full:"Pasai"},
+    {abb:"SAK", full:"Siak"},
+    {abb:"SUN", full:"Sunda"},
+    {abb:"KUT", full:"Kutai"},
+    {abb:"BNJ", full:"Banjar"},
+    {abb:"LFA", full:"Lanfang"},
+    {abb:"LNO", full:"Lanao"},
+    {abb:"LUW", full:"Luwu"},
+    {abb:"MGD", full:"Maguindanao"},
+    {abb:"TER", full:"Ternate"},
+    {abb:"TID", full:"Tidore"},
+    {abb:"MAS", full:"Madyaas"},
+    {abb:"PGS", full:"Pangasinan"},
+    {abb:"TDO", full:"Tondo"},
+    {abb:"MNA", full:"Maynila"},
+    {abb:"CEB", full:"Cebu"},
+    {abb:"BTU", full:"Butuan"},
+    {abb:"CSU", full:"Cusco"},
+    {abb:"CCQ", full:"Calchaqui"},
+    {abb:"MPC", full:"Mapuche"},
+    {abb:"MCA", full:"Muisca"},
+    {abb:"QTO", full:"Quito"},
+    {abb:"CJA", full:"Cajamarca"},
+    {abb:"HJA", full:"Huyla"},
+    {abb:"PTG", full:"Potiguara"},
+    {abb:"TPQ", full:"Tupiniquim"},
+    {abb:"TPA", full:"Tupinamba"},
+    {abb:"TUA", full:"Tapuia"},
+    {abb:"GUA", full:"Guarani"},
+    {abb:"CUA", full:"Charrua"},
+    {abb:"WKA", full:"Wanka"},
+    {abb:"CYA", full:"Chachapoya"},
+    {abb:"CLA", full:"Colla"},
+    {abb:"CRA", full:"Charca"},
+    {abb:"PCJ", full:"Pacajes"},
+    {abb:"ARW", full:"Arawak"},
+    {abb:"CAB", full:"Carib"},
+    {abb:"ICM", full:"Ichma"},
+    {abb:"MAT", full:"Matlatzinca"},
+    {abb:"COI", full:"Coixtlahuaca"},
+    {abb:"TEO", full:"Teotitlan"},
+    {abb:"XAL", full:"Xalisco"},
+    {abb:"GAM", full:"Guamar"},
+    {abb:"HST", full:"Huastec"},
+    {abb:"CCM", full:"Chichimeca"},
+    {abb:"OTO", full:"Otomi"},
+    {abb:"YOK", full:"Yokotan"},
+    {abb:"LAC", full:"Lacandon"},
+    {abb:"KAQ", full:"Kaqchikel"},
+    {abb:"CTM", full:"Chactemal"},
+    {abb:"KER", full:"Keres"},
+    {abb:"ZNI", full:"Zuni"},
+    {abb:"MSC", full:"Mescalero"},
+    {abb:"LIP", full:"Lipan"},
+    {abb:"CHT", full:"Chorti"},
+    {abb:"MIS", full:"Miskito"},
+    {abb:"TAI", full:"Tairona"},
+    {abb:"CNP", full:"Can"},
+    {abb:"TON", full:"Tonallan"},
+    {abb:"YAQ", full:"Yaqui"},
+    {abb:"YKT", full:"Yokuts"},
+    {abb:"NSS", full:"New Providence"},
+    {abb:"PRY", full:"Port Royal"},
+    {abb:"TOR", full:"Tortuga"},
+    {abb:"LIB", full:"Libertatia"},
+    {abb:"JMN", full:"Jan Mayan"},
+    {abb:"ROM", full:"Roman Empire"},
+    {abb:"SYN", full:"Synthetics"}
+    ]
+
+var container7 = document.getElementById("container7");
+
+function translateEffectName(codeName) {
+
+  var wikiName = codeName;
+
+  switch(codeName) {
+
+    case "naval tradition":
+      wikiName = "Yearly naval tradition";
+      break;
+    case "range":
+      wikiName = "Colonial range";
+      break;
+    case "heavy ship power":
+      wikiName = "Heavy ship combat ability";
+      break;
+    case "light ship power":
+      wikiName = "Light ship combat ability";
+      break;
+    case "naval forcelimit modifier":
+      wikiName = "Naval force limit modifier";
+      break;
+    case "sailors recovery speed":
+      wikiName = "Sailor recovery speed";
+      break;
+    case "leader naval manuever":
+      wikiName = "Naval leader manuever";
+      break;
+    case "leader naval fire":
+      wikiName = "Naval leader fire";
+      break;
+    case "global sailors modifier":
+      wikiName = "National sailors modifier";
+      break;
+    case "navy tradition":
+      wikiName = "Yearly navy tradition";
+      break;
+    case "galley power":
+      wikiName = "Galley combat ability";
+      break;
+    case "naval morale":
+      wikiName = "Morale of navies";
+      break;
+    case "sunk ship morale hit recieved":
+      wikiName = "Morale hit when losing a ship";
+      break;
+    case "infantry power":
+      wikiName = "Infantry combat ability";
+      break;
+    case "fire damage":
+      wikiName = "Land fire damage";
+      break;
+    case "artillery power":
+      wikiName = "Artillery combat ability";
+      break;
+    case "army tradition":
+      wikiName = "Yearly army tradition";
+      break;
+    case "army tradition decay":
+      wikiName = "Yearly army tradition decay";
+      break;
+    case "land morale":
+      wikiName = "Morale of armies";
+      break;
+    case "fort maintenance modifier":
+      wikiName = "Fort maintenance";
+      break;
+    case "free leader pool":
+      wikiName = "Leader without upkeep";
+      break;
+    case "cavalry power":
+      wikiName = "Cavalry combat ability";
+      break;
+    case "war exhaustion cost":
+      wikiName = "Cost of reducing war exhaustion";
+      break;
+    case "hostile attrition":
+      wikiName = "Attrition for enemies";
+      break;
+    case "defensiveness":
+      wikiName = "Garrison size";
+      break;
+    case "merc maintenance modifier":
+      wikiName = "Mercenary maintenance";
+      break;
+    case "possible mercenaries":
+      wikiName = "Available mercenaries";
+      break;
+    case "leader land shock":
+      wikiName = "Land leader shock";
+      break;
+    case "leader land fire":
+      wikiName = "Land leader fire";
+      break;
+    case "leader land manuever":
+      wikiName = "Land leader manuever";
+      break;
+    case "amount of banners":
+      wikiName = "Possible Manchu banners";
+      break;
+    case "land foreclimit modifier":
+      wikiName = "Land force limit modifier";
+      break;
+    case "cavalry flanking":
+      wikiName = "Cavalry flanking ability";
+      break;
+    case "army tradition from battles":
+      wikiName = "Army tradition from battles";
+      break;
+    case "artillery power":
+      wikiName = "Artillery combat ability";
+      break;
+    case "diplomatic upkeep":
+      wikiName = "Diplomatic relations";
+      break;
+    case "diplomats":
+      wikiName = "Diplomat";
+      break;
+    case "improve relation modifier":
+      wikiName = "Improve relations";
+      break;
+    case "years of nationalism":
+      wikiName = "Years of separtism";
+      break;
+    case "num accepted cultures":
+      wikiName = "Max promoted culture";
+      break;
+    case "imperial authority":
+      wikiName = "Imperial authority growth modifier";
+      break;
+    case "republican tradition":
+      wikiName = "Yearly republican tradition";
+      break;
+    case "global trade goods size modifier":
+      wikiName = "Goods produced modifer";
+      break;
+    case "global manpower modifier":
+      wikiName = "National manpower modifier";
+      break;
+    case "global tax modifier":
+      wikiName = "National tax modifier";
+      break;
+    case "global missionary strength":
+      wikiName = "Missionary strength";
+      break;
+    case "global autonomy":
+      wikiName = "Monthly autonomy change";
+      break;
+    case "global institution spread":
+      wikiName = "Institution spread";
+      break;
+    case "global unrest":
+      wikiName = "National unrest";
+      break;
+    case "global ship cost":
+      wikiName = "Ship cost";
+      break;
+    case "global spy defense":
+      wikiName = "Foreign spy detection";
+      break;
+    case "global colonial growth":
+      wikiName = "Colonial growth";
+      break;
+    case "global regiment cost":
+      wikiName = "Regiment cost";
+      break;
+    case "global garrison growth":
+      wikiName = "National garrison growth";
+      break;
+    case "global heretic missionary strength":
+      wikiName = "Missionary strength vs heretics";
+      break;
+    case "global foreign trade power":
+      wikiName = "Global trade power";
+      break;
+    case "global ship recruit speed":
+      wikiName = "Shipbuilding time";
+      break;
+    case "global own trade power":
+      wikiName = "Domestic trade power";
+      break;
+    case "global prov trade power modifier":
+      wikiName = "Provincial trade power modifier";
+      break;
+    case "core creation":
+      wikiName = "core-creation cost";
+      break;
+    case "enemy core creation":
+      wikiName = "Hostile core-creation cost on us";
+      break;
+    case "legitimacy":
+      wikiName = "Yearly legitimacy";
+      break;
+    case "ae impact":
+      wikiName = "Aggressive expansion impact";
+      break;
+    case "possible dip policy":
+      wikiName = "Diplomatic possible policies";
+      break;
+    case "possible policy":
+      wikiName = "Possible policies";
+      break;
+    case "free mil policy":
+      wikiName = "Military free policies";
+      break;
+    case "prestige":
+      wikiName = "Yearly prestige";
+      break;
+    case "heir chance":
+      wikiName = "Chance of a new heir";
+      break;
+    case "inflation reduction":
+      wikiName = "Yearly inflation reduction";
+      break;
+    case "interest":
+      wikiName = "Interest per annum";
+      break;
+    case "trade range modifier":
+      wikiName = "Trade range";
+      break;
+    case "build cost":
+      wikiName = "Construction cost";
+      break;
+    case "tolerance heretics":
+      wikiName = "Tolerance of heretics";
+      break;
+    case "tolerance heathen":
+      wikiName = "Tolerance of heathens";
+      break;
+    case "tolerance own":
+      wikiName = "Tolerance of the true faith";
+      break;
+    case "papal influence":
+      wikiName = "Yearly papal influence";
+      break;
+    case "church power modifier":
+      wikiName = "Church power";
+      break;
+    case "devotion":
+      wikiName = "Yearly devotion";
+      break;
+    case "monthly fervor increase":
+      wikiName = "Monthly fervor";
+      break;
+    case "horde unity":
+      wikiName = "Yearly horde unity";
+      break;
+    case "mil tech cost modifier":
+      wikiName = "Military technology cost";
+      break;
+    case "adm tech cost modifier":
+      wikiName = "Administrative technology cost";
+      break;
+    case "dip tech cost modifier":
+      wikiName = "Diplomatic technology cost";
+      break;
+    case "fabricate claims cost":
+      wikiName = "Cost to fabricate claims";
+      break;
+    case "same culture advisor cost":
+      wikiName = "Cost of advisors with ruler's culture";
+      break;
+    case "global regiment recruit speed":
+      wikiName = "Recruitment time";
+      break;
+
+  }
+
+  wikiName = wikiName.charAt(0).toUpperCase() + wikiName.slice(1);
+
+  return wikiName;
+
+}
+
+function tagToName(tag) {
+
+  for (i = 0; i < tagArray.length; i++) {
+
+    if (tag == tagArray[i].abb) {
+
+      return tagArray[i].full;
+
+    }
+
+  }
+
+  return tag;
+
+}
+
+function fullToTag(tag) {
+
+  for (i = 0; i < tagArray.length; i++) {
+
+    if (tag == tagArray[i].full) {
+
+      return tagArray[i].abb;
+
+    }
+
+  }
+
+  return tag;
+
+}
+
+function generateCodeFromFile() {
+
+  document.getElementById("versionNumber").value = "1.29";
+
+  var fileToLoad = document.getElementById("myFile").files[0];
+
+  var fileReader = new FileReader();
+
+  fileReader.onload = function(fileLoadedEvent){
+
+    var textFromFileLoaded = fileLoadedEvent.target.result;
+
+    countryTag = fullToTag(document.getElementById("countryTag").value); //Need to convert full name into tag name, if applicable.
+
+
+    //document.getElementById("alertContainer").innerHTML = "<textarea class='form-control' rows='5' id='codeText'></textarea>";
+
+    //successSign = "<h4><b>Your code has successfully been generated!</b></h4>Now you can go to the edit page for the <a href='https://eu4.paradoxwikis.com/index.php?title=National_ideas&action=edit'>EU4 National Ideas Wiki</a> and update or add to the content!<br><hr>";
+    //alertContainer.insertAdjacentHTML('afterbegin', successSign);
+
+    //codeText.insertAdjacentHTML('beforeend', textFromFileLoaded);
+
+    codeText = textFromFileLoaded;
+
+    //document.getElementById("alertContainer").style.visibility = "visible";
+    //document.getElementById("alertContainer").scrollIntoView();
+
+
+    countryTagToName = tagToName(countryTag);
+    document.getElementById("countryName").value = countryTagToName;
+
+    //Lines is an array of each line in the file. REMOVING ABOVE FAILS, BECAUSE I AM ACTUALLY PARSING THE CODE FROM THE THING ON THE PAGE
+    //lines = document.getElementById("codeText").value.replace(/(\r\n)|\r|\n/g, '\n').split(/\n+/g);
+    lines = codeText.replace(/(\r\n)|\r|\n/g, '\n').split(/\n+/g);
+    linesLength = lines.length;
+
+    ideaLines = [];
+    var startPoint = 0;
+    var braceCounter = 0;
+
+    //Gets the starting point.
+    for (i = 0; i < linesLength; i++) {
+
+      if (lines[i][0] == countryTag[0] && lines[i][1] == countryTag[1] && lines[i][2] == countryTag[2]){
+
+        startPoint = i;
+
+      }
+
+    }
+
+    //Adds all the code for the country you specified to an array.
+    for (i = 0; i < 100; i++) {
+
+      ideaLines.push(lines[startPoint+i]);
+
+      if (lines[startPoint+i].indexOf('}') > -1) {
+        braceCounter++;
+      }
+
+      if (braceCounter == 11) {
+        break;
+      }
+
+    }
+
+    ideaLinesLength = ideaLines.length;
+
+    ideaCounter = 0;
+
+    //For each line in ideaLines
+    for (i = 1; i < ideaLinesLength; i++) {
+
+      //If a line has "= {" Do not add if it is an OR section
+      if (ideaLines[i].indexOf('= {') > -1 && ideaLines[i].indexOf('OR = {') == -1) {
+
+        //Mark this as a start point.
+        startPoint = i;
+
+        //Begins a new idea array for idea elements.
+        swedenIdea = [];
+
+        //Holds the title of the section
+        sectionTitle = ideaLines[i].replace(/\s+/g, '').replace(/_/g, ' ').split("=");
+        sectionTitle = sectionTitle[0];
+
+        //Keeps tracks of the number of sections.
+        ideaCounter++;
+
+        //Copy lines from the start point until hit a "}".
+        for (k = 1; k < 50; k++) {
+
+          //If the line has a "}" stop the loop.
+          if (ideaLines[startPoint+k].indexOf('}') > -1) {
+            break;
+          }
+
+          //Else, add the line to the array.
+          swedenIdea.push(ideaLines[startPoint+k]);
+
+        }
+
+        swedenIdeaLength = swedenIdea.length;
+
+        //If this is the Traditions section
+        if (ideaCounter == 1) {
+
+          //Loop through the elements in swedenIdea array
+          for (n = 0; n < swedenIdeaLength; n++) {
+
+            adder = n+1;
+
+            //Takes something like "  Infantry_Combat_Ability = 2" and returns ["Infantry Combat Ability","2"].
+            tradition = swedenIdea[n].replace(/\s+/g, '').replace(/_/g, ' ').split("=");
+
+            /////////////
+
+            //If indexof hash, do this, set tValue to tradition[1][0], else set tValue to tradition[1].
+            //Use tValue to refer to tradition[1] below.
+
+            var tValue = "";
+
+            if (tradition[1].indexOf("#") > -1) {
+              tradition[1] = tradition[1].split("#");
+              tValue = tradition[1][0];
+            } else {
+              tValue = tradition[1];
+            }
+
+            //////////////
+
+            //Add values to the form.
+            document.getElementById("traditionEffect"+adder).value = translateEffectName(tradition[0]);
+            translatedName = document.getElementById("traditionEffect"+adder).value;
+
+            if (tValue < 1) {
+
+              exceptions = ["National unrest", "Yearly absolutism", "Yearly republican tradition", "Yearly army tradition", "Yearly devotion", "Monthly fervor", "Yearly inflation reduction", "Yearly corruption", "Monthly piety", "Monthly autonomy change", "Monthly war exhaustion", "Interest per annum", "Yearly prestige", "Attrition for enemies", "Yearly legitimacy", "Yearly navy tradition", "Years of separtism"];
+
+              //If the effect exists in the exceptions list, print the value plainly.
+              if (exceptions.indexOf(translatedName) > -1) {
+
+                if (tValue > 0) {
+
+                  document.getElementById("traditionValue"+adder).value = "+"+tValue;
+
+                } else {
+
+                  document.getElementById("traditionValue"+adder).value = tValue;
+
+                }
+
+              } else if (tValue > 0) {
+
+                document.getElementById("traditionValue"+adder).value = "+"+Number(tValue)*100+"%";
+
+              } else {
+
+              document.getElementById("traditionValue"+adder).value = Number(tValue)*100+"%"; // should only do if less than 1
+
+              }
+
+            } else {
+
+              if (tValue > 0) {
+
+                document.getElementById("traditionValue"+adder).value = "+"+tValue;
+
+              } else {
+
+                document.getElementById("traditionValue"+adder).value = tValue;
+
+              }
+
+            }
+
+          }
+
+        }
+
+        if (ideaCounter == 2) {
+
+          for (n = 0; n < swedenIdeaLength; n++) {
+
+            adder = n+1;
+
+            //Takes something like "  Infantry_Combat_Ability = 2" and returns ["Infantry Combat Ability","2"].
+            ambition = swedenIdea[n].replace(/\s+/g, '').replace(/_/g, ' ').split("=");
+
+            //If indexof hash, do this, set tValue to tradition[1][0], else set tValue to tradition[1].
+            //Use tValue to refer to tradition[1] below.
+
+            tValue = "";
+
+            if (ambition[1].indexOf("#") > -1) {
+              ambition[1] = ambition[1].split("#");
+              tValue = ambition[1][0];
+            } else {
+              tValue = ambition[1];
+            }
+
+            if (n == 0) {
+
+              document.getElementById("ambitionEffect").value = translateEffectName(ambition[0]);
+              translatedName = document.getElementById("ambitionEffect").value;
+
+              if (tValue < 1) {
+
+                exceptions = ["National unrest", "Yearly absolutism", "Yearly republican tradition", "Yearly army tradition", "Yearly devotion", "Monthly fervor", "Yearly inflation reduction", "Yearly corruption", "Monthly piety", "Monthly autonomy change", "Monthly war exhaustion", "Interest per annum", "Yearly prestige", "Attrition for enemies", "Yearly legitimacy", "Yearly navy tradition", "Years of separtism"];
+
+                //If the effect exists in the exceptions list, print the value plainly.
+                if (exceptions.indexOf(translatedName) > -1) {
+
+                  if (tValue > 0) {
+
+                    document.getElementById("ambitionValue").value = "+"+tValue;
+
+                  } else {
+
+                    document.getElementById("ambitionValue").value = tValue;
+
+                  }
+
+                } else if (tValue > 0) {
+
+                  document.getElementById("ambitionValue").value = "+"+Number(tValue)*100+"%";
+
+                } else {
+
+                  document.getElementById("ambitionValue").value = Number(tValue)*100+"%"; // should only do if less than 1
+
+                }
+
+              } else {
+
+                if (tValue > 0) {
+
+                  document.getElementById("ambitionValue").value = "+"+tValue;
+
+                } else {
+
+                  document.getElementById("ambitionValue").value = tValue;
+
+                }
+
+              }
+
+            } else {
+
+              //ambition[0] = ambition[0].charAt(0).toUpperCase() + ambition[0].slice(1);
+
+              //document.getElementById("ambitionEffectBonus").value = ambition[0];
+
+              document.getElementById("ambitionEffectBonus").value = translateEffectName(ambition[0]);
+              translatedName = document.getElementById("ambitionEffectBonus").value;
+
+              if (tValue < 1) {
+
+                exceptions = ["National unrest", "Yearly absolutism", "Yearly republican tradition", "Yearly army tradition", "Yearly devotion", "Monthly fervor", "Yearly inflation reduction", "Yearly corruption", "Monthly piety", "Monthly autonomy change", "Monthly war exhaustion", "Interest per annum", "Yearly prestige", "Attrition for enemies", "Yearly legitimacy", "Yearly navy tradition", "Years of separtism"];
+
+                //If the effect exists in the exceptions list, print the value plainly.
+                if (exceptions.indexOf(translatedName) > -1) {
+
+                  if (tValue > 0) {
+
+                    document.getElementById("ambitionValueBonus").value = "+"+tValue;
+
+                  } else {
+
+                    document.getElementById("ambitionValueBonus").value = tValue;
+
+                  }
+
+                } else if (tValue > 0) {
+
+                  document.getElementById("ambitionValueBonus").value = "+"+Number(tValue)*100+"%";
+
+                } else {
+
+                  document.getElementById("ambitionValueBonus").value = Number(tValue)*100+"%";
+
+                }
+
+              } else {
+
+                if (tValue > 0) {
+
+                  document.getElementById("ambitionValueBonus").value = "+"+tValue;
+
+                } else {
+
+                  document.getElementById("ambitionValueBonus").value = tValue;
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+        if (ideaCounter == 4 || ideaCounter == 5 || ideaCounter == 6 || ideaCounter == 7 || ideaCounter == 8 || ideaCounter == 9 || ideaCounter == 10) {
+
+          for (n = 0; n < swedenIdeaLength; n++) {
+
+            adder = ideaCounter - 3;
+
+            idea = swedenIdea[n].replace(/\s+/g, '').replace(/_/g, ' ').split("=");
+
+            //If indexof hash, do this, set tValue to tradition[1][0], else set tValue to tradition[1].
+            //Use tValue to refer to tradition[1] below.
+
+            tValue = "";
+
+            if (idea[1].indexOf("#") > -1) {
+              idea[1] = idea[1].split("#");
+              tValue = idea[1][0];
+            } else {
+              tValue = idea[1];
+            }
+
+
+            if (n == 0) {
+
+              var splitStr = sectionTitle.toLowerCase().split(' ');
+
+              if (splitStr[0].toUpperCase() == countryTag) {
+                splitStr.splice(splitStr[0], 1);
+              }
+
+              for (var j = 0; j < splitStr.length; j++) {
+
+                splitStr[j] = splitStr[j].charAt(0).toUpperCase() + splitStr[j].substring(1);
+
+              }
+
+              splitStr = splitStr.join(' ');
+
+              document.getElementById("ideaName"+adder).value = splitStr;
+              document.getElementById("ideaEffect"+adder).value = translateEffectName(idea[0]);
+              translatedName = document.getElementById("ideaEffect"+adder).value;
+
+              //If the value is less than one, commonly a sign for percent
+              if (tValue < 1) {
+
+                exceptions = ["National unrest", "Yearly absolutism", "Yearly republican tradition", "Yearly army tradition", "Yearly devotion", "Monthly fervor", "Yearly inflation reduction", "Yearly corruption", "Monthly piety", "Monthly autonomy change", "Monthly war exhaustion", "Interest per annum", "Yearly prestige", "Attrition for enemies", "Yearly legitimacy", "Yearly navy tradition", "Years of separtism"];
+
+                //If the effect exists in the exceptions list, print the value plainly.
+                if (exceptions.indexOf(translatedName) > -1) {
+
+                  if (tValue > 0) {
+
+                    document.getElementById("ideaValue"+adder).value = "+"+tValue;
+
+                  } else {
+
+                    document.getElementById("ideaValue"+adder).value = tValue;
+
+                  }
+
+                } else if (tValue > 0) {
+
+                  document.getElementById("ideaValue"+adder).value = "+"+Number(tValue)*100+"%";
+
+                } else {
+
+                    document.getElementById("ideaValue"+adder).value = Number(tValue)*100+"%"; // should only do if less than 1
+
+                }
+
+              } else {
+
+                if (tValue > 0) {
+
+                  document.getElementById("ideaValue"+adder).value = "+"+tValue;
+
+                } else {
+
+                  document.getElementById("ideaValue"+adder).value = tValue;
+
+                }
+
+              }
+
+            } else {
+
+              newContent = "<div class='row'><div class='col-5'><br><font color='grey'><p align='right'>Optional Additional Effect</p></font></div><div class='col-2'>Value:<input type='text' id = 'ideaValue"+adder+"Bonus" + n + "' name = 'ideaValue"+adder+"Bonus" + n + "' class='form-control' style='color:green; font-weight: bold;'></div><div class='col'>Effect:<input id = 'ideaEffect"+adder+"Bonus" + n + "' type='text' name = 'ideaEffect"+adder+"Bonus" + n + "' class='form-control'></div></div></div>";
+
+              switch (ideaCounter) {
+
+                case 4:
+                  container1.insertAdjacentHTML('beforeend', newContent);
+                  break;
+                case 5:
+                  container2.insertAdjacentHTML('beforeend', newContent);
+                  break;
+                case 6:
+                  container3.insertAdjacentHTML('beforeend', newContent);
+                  break;
+                case 7:
+                  container4.insertAdjacentHTML('beforeend', newContent);
+                  break;
+                case 8:
+                  container5.insertAdjacentHTML('beforeend', newContent);
+                  break;
+                case 9:
+                  container6.insertAdjacentHTML('beforeend', newContent);
+                  break;
+                case 10:
+                  container7.insertAdjacentHTML('beforeend', newContent);
+                  break;
+              }
+
+              document.getElementById("ideaEffect"+adder+"Bonus"+n).value = translateEffectName(idea[0]);
+              translatedName = document.getElementById("ideaEffect"+adder+"Bonus"+n).value;
+
+              if (tValue < 1) {
+
+                exceptions = ["National unrest", "Yearly absolutism", "Yearly republican tradition", "Yearly army tradition", "Yearly devotion", "Monthly fervor", "Yearly inflation reduction", "Yearly corruption", "Monthly piety", "Monthly autonomy change", "Monthly war exhaustion", "Interest per annum", "Yearly prestige", "Attrition for enemies", "Yearly legitimacy", "Yearly navy tradition", "Years of separtism"];
+
+                //If the effect exists in the exceptions list, print the value plainly.
+                if (exceptions.indexOf(translatedName) > -1) {
+
+                  if (tValue > 0) {
+
+                    document.getElementById("ideaValue"+adder+"Bonus"+n).value = "+"+tValue;
+
+                  } else {
+
+                    document.getElementById("ideaValue"+adder+"Bonus"+n).value = tValue;
+
+                  }
+
+                } else if (tValue > 0) {
+
+                  document.getElementById("ideaValue"+adder+"Bonus"+n).value = "+"+Number(tValue)*100+"%";
+
+                } else {
+
+                    document.getElementById("ideaValue"+adder+"Bonus"+n).value = Number(tValue)*100+"%"; // should only do if less than 1
+                }
+
+              } else {
+
+                if (tValue > 0) {
+
+                  document.getElementById("ideaValue"+adder+"Bonus"+n).value = "+"+tValue;
+
+                } else {
+
+                  document.getElementById("ideaValue"+adder+"Bonus"+n).value = tValue;
+
+                }
+
+              }
+
+              autocomplete(document.getElementById("ideaEffect"+adder+"Bonus" + n), countries);
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  };
+
+  fileReader.readAsText(fileToLoad, "UTF-8");
+
+  //generateCode();
+
+}
+
+function wikiIconNames(effectName) {
+
+  switch (effectName) {
+
+    case "Yearly legitimacy":
+      effectName = "Legitimacy";
+      break;
+    case "Yearly army tradition decay":
+      effectName = "Army tradition decay";
+      break;
+    case "Yearly army tradition":
+      effectName = "Army tradition";
+      break;
+    case "Spy network construction":
+      effectName = "Spy offense";
+      break;
+    case "Yearly prestige":
+      effectName = "Prestige";
+      break;
+    case "Yearly devotion":
+      effectName = "Devotion";
+      break;
+    case "Yearly navy tradition":
+      effectName = "Navy tradition";
+      break;
+    case "Yearly republican tradition":
+      effectName = "Republican tradition";
+      break;
+    case "Yearly inflation reduction":
+      effectName = "Inflation reduction";
+      break;
+    case "Yearly papal influence":
+      effectName = "Papal influence";
+      break;
+    case "Yearly prestige decay":
+      effectName = "Prestige decay";
+      break;
+    case "Monthly autonomy change":
+      effectName = "Autonomy";
+      break;
+    case "Monthly war exhaustion":
+      effectName = "War exhaustion";
+      break;
+    case "Diplomat":
+      effectName = "Diplomats";
+      break;
+
+  }
+
+  return effectName;
+
+}
+
+function dlcCheck (name) {
+
+  dlcItems = [
+
+    "May raid coasts",
+    "Privateer efficiency",
+    "Church power",
+    "Yearly horde unity",
+    "Caravan power",
+    "Yearly devotion",
+    "Possible Manchu banners",
+    "Military free policies",
+    "Diplomatic free policies",
+    "Yearly meritocracy",
+    "Monthly fervor",
+    "May establish Siberian Frontiers",
+    "Mandate growth modifier",
+    "Possible policies",
+    "Migration cooldown",
+    "Yearly tribal allegiance",
+    "Administrative free policies"];
+
+  if (dlcItems.indexOf(name) > -1) {
+
+    //name is "caravan power" should return dlc attribute with name
+
+    return "&#123;&#123;DLC-only|"+name+"&#125;&#125;";
+
+  }
+
+  return name;
+
+}
+
+function booleanName (name) {
+
+  switch (name) {
+
+    case "May establish frontier":
+      name = "May establish Siberian Frontiers";
+      break;
+    case "Auto explore adjacent to colony":
+      name = "Automatically discover adjacent when a colony is built.";
+      break;
+    case "No religion penalty":
+      name = "Negative religious tolerance no longer gives any penalties. Heretic and heathen provinces do not give us any penalty to religious unity.";
+      break;
+    case "Cb on primitives":
+      name = "Can fabricate claim overseas in colonial region.";
+      break;
+    case "May explore":
+      name = "Can recruit Explorers and Conquistadors";
+      break;
+    case "Idea claim colonies":
+      name = "Can fabricate claims on any overseas province, provided it is overseas for its owner";
+      break;
+
+  }
+
+  return name;
+
+}
+
+function generateCode() {
+
+  //Check if all required fields are filled.
+  //If not, return an error bootstrap alert through innerhtml
+  //If all good, do the following
+
+  countryName = document.getElementById('countryName').value;
+  versionNumber = document.getElementById('versionNumber').value;
+  countryDemonym = document.getElementById('countryDemonym').value;
+
+  ideaNames = [];
+  ideaNames.push(document.getElementById('ideaName1').value);
+  ideaNames.push(document.getElementById('ideaName2').value);
+  ideaNames.push(document.getElementById('ideaName3').value);
+  ideaNames.push(document.getElementById('ideaName4').value);
+  ideaNames.push(document.getElementById('ideaName5').value);
+  ideaNames.push(document.getElementById('ideaName6').value);
+  ideaNames.push(document.getElementById('ideaName7').value);
+
+  effectNames = [];
+  effectNames.push(document.getElementById('traditionEffect1').value);
+  effectNames.push(document.getElementById('traditionEffect2').value);
+
+  effectNames.push(document.getElementById('ideaEffect1').value);
+  effectNames.push(document.getElementById('ideaEffect2').value);
+  effectNames.push(document.getElementById('ideaEffect3').value);
+  effectNames.push(document.getElementById('ideaEffect4').value);
+  effectNames.push(document.getElementById('ideaEffect5').value);
+  effectNames.push(document.getElementById('ideaEffect6').value);
+  effectNames.push(document.getElementById('ideaEffect7').value);
+
+  effectNames.push(document.getElementById('ambitionEffect').value);
+
+  effectValues = [];
+  effectValues.push(document.getElementById('traditionValue1').value);
+  effectValues.push(document.getElementById('traditionValue2').value);
+
+  effectValues.push(document.getElementById('ideaValue1').value);
+  effectValues.push(document.getElementById('ideaValue2').value);
+  effectValues.push(document.getElementById('ideaValue3').value);
+  effectValues.push(document.getElementById('ideaValue4').value);
+  effectValues.push(document.getElementById('ideaValue5').value);
+  effectValues.push(document.getElementById('ideaValue6').value);
+  effectValues.push(document.getElementById('ideaValue7').value);
+
+  effectValues.push(document.getElementById('ambitionValue').value);
+
+  bonusEffectValues1 = [];
+  bonusEffectValues2 = [];
+  bonusEffectValues3 = [];
+  bonusEffectValues4 = [];
+  bonusEffectValues5 = [];
+  bonusEffectValues6 = [];
+  bonusEffectValues7 = [];
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaValue1Bonus" + i) !== null) {
+      bonusEffectValues1.push(document.getElementById("ideaValue1Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaValue2Bonus" + i) !== null) {
+      bonusEffectValues2.push(document.getElementById("ideaValue2Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaValue3Bonus" + i) !== null) {
+      bonusEffectValues3.push(document.getElementById("ideaValue3Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaValue4Bonus" + i) !== null) {
+      bonusEffectValues4.push(document.getElementById("ideaValue4Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaValue5Bonus" + i) !== null) {
+      bonusEffectValues5.push(document.getElementById("ideaValue5Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaValue6Bonus" + i) !== null) {
+      bonusEffectValues6.push(document.getElementById("ideaValue6Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaValue7Bonus" + i) !== null) {
+      bonusEffectValues7.push(document.getElementById("ideaValue7Bonus" + i).value);
+    }
+
+  }
+
+  ambitionEffectBonus = document.getElementById('ambitionEffectBonus').value;
+  ambitionValueBonus = document.getElementById('ambitionValueBonus').value;
+
+  bonusEffectNames1 = [];
+  bonusEffectNames2 = [];
+  bonusEffectNames3 = [];
+  bonusEffectNames4 = [];
+  bonusEffectNames5 = [];
+  bonusEffectNames6 = [];
+  bonusEffectNames7 = [];
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaEffect1Bonus" + i) !== null) {
+      bonusEffectNames1.push(document.getElementById("ideaEffect1Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaEffect2Bonus" + i) !== null) {
+      bonusEffectNames2.push(document.getElementById("ideaEffect2Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaEffect3Bonus" + i) !== null) {
+      bonusEffectNames3.push(document.getElementById("ideaEffect3Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaEffect4Bonus" + i) !== null) {
+      bonusEffectNames4.push(document.getElementById("ideaEffect4Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaEffect5Bonus" + i) !== null) {
+      bonusEffectNames5.push(document.getElementById("ideaEffect5Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaEffect6Bonus" + i) !== null) {
+      bonusEffectNames6.push(document.getElementById("ideaEffect6Bonus" + i).value);
+    }
+
+  }
+
+  for (i = 0; i < 4; i++) {
+
+    if (document.getElementById("ideaEffect7Bonus" + i) !== null) {
+      bonusEffectNames7.push(document.getElementById("ideaEffect7Bonus" + i).value);
+    }
+
+  }
+
+  document.getElementById("alertContainer").innerHTML = "";
+
+  booleanItems = ["May establish frontier", "Auto explore adjacent to colony", "No religion penalty", "Cb on primitives", "May raid coasts", "May explore", "Idea claim colonies"];
+
+  newContent0 = "&lt;section begin="+countryName+" /&gt;&#123;&#123;idea group<br>";
+  newContent1 = "|version="+versionNumber+"<br>";
+  newContent2 = "|name2="+countryDemonym+"<br>";
+  newContent3 = "|name=[[File:"+countryName+".png|28px]] [["+countryName+"]]<br>";
+
+  newContent4 = "|tradition1=&#123;&#123;green|"+effectValues[0]+"|b&#125;&#125; "+dlcCheck(effectNames[0])+"<br>";
+  newContent5 = "|tradition2=&#123;&#123;green|"+effectValues[1]+"|b&#125;&#125; "+dlcCheck(effectNames[1])+"<br>";
+
+  //First Idea
+
+  newContent6 = "|idea1="+ideaNames[0]+"<br>";
+
+  /////////////
+
+  if (booleanItems.indexOf(effectNames[2]) > -1) {
+
+    newContent7 = "|idea1effect="+booleanName(effectNames[2])+"<br>";
+
+  } else {
+
+    newContent7 = "|idea1effect=&#123;&#123;green|"+effectValues[2]+"|b&#125;&#125; "+dlcCheck(effectNames[2])+"<br>";
+
+  }
+
+  ////////////
+
+  if (bonusEffectValues1[0] !== undefined && bonusEffectValues1[0] !== "") {
+    newContent8 = ":&#123;&#123;green|"+bonusEffectValues1[0]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames1[0])+"<br>";
+  } else {
+    newContent8 = undefined;
+  }
+
+  if (bonusEffectValues1[1] !== undefined && bonusEffectValues1[1] !== "") {
+    newContent9 = ":&#123;&#123;green|"+bonusEffectValues1[1]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames1[1])+"<br>";
+  } else {
+    newContent9 = undefined;
+  }
+
+  if (bonusEffectValues1[2] !== undefined && bonusEffectValues1[2] !== "") {
+    newContent10 = ":&#123;&#123;green|"+bonusEffectValues1[2]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames1[2])+"<br>";
+  } else {
+    newContent10 = undefined;
+  }
+
+  newContent11 = "|idea1icon="+wikiIconNames(effectNames[2])+"<br>";
+
+  //Second Idea
+
+  newContent12 = "|idea2="+ideaNames[1]+"<br>";
+
+  ///////////// Checking if this is a boolean item
+
+  if (booleanItems.indexOf(effectNames[3]) > -1) {
+
+    newContent13 = "|idea2effect="+booleanName(effectNames[3])+"<br>";
+
+  } else {
+
+    newContent13 = "|idea2effect=&#123;&#123;green|"+effectValues[3]+"|b&#125;&#125; "+dlcCheck(effectNames[3])+"<br>";
+
+  }
+
+  ////////////
+
+  if (bonusEffectValues2[0] !== undefined && bonusEffectValues2[0] !== "") {
+    newContent14 = ":&#123;&#123;green|"+bonusEffectValues2[0]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames2[0])+"<br>";
+  } else {
+    newContent14 = undefined;
+  }
+
+  if (bonusEffectValues2[1] !== undefined && bonusEffectValues2[1] !== "") {
+    newContent15 = ":&#123;&#123;green|"+bonusEffectValues2[1]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames2[1])+"<br>";
+  } else {
+    newContent15 = undefined;
+  }
+
+  if (bonusEffectValues2[2] !== undefined && bonusEffectValues2[2] !== "") {
+    newContent16 = ":&#123;&#123;green|"+bonusEffectValues2[2]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames2[2])+"<br>";
+  } else {
+    newContent16 = undefined;
+  }
+
+  newContent17 = "|idea2icon="+wikiIconNames(effectNames[3])+"<br>";
+
+  //Third Idea
+
+  newContent18 = "|idea3="+ideaNames[2]+"<br>";
+
+  ///////////// Checking if this is a boolean item
+
+  if (booleanItems.indexOf(effectNames[4]) > -1) {
+
+    newContent19 = "|idea3effect="+booleanName(effectNames[4])+"<br>";
+
+  } else {
+
+    newContent19 = "|idea3effect=&#123;&#123;green|"+effectValues[4]+"|b&#125;&#125; "+dlcCheck(effectNames[4])+"<br>";
+
+  }
+
+  ////////////
+
+  if (bonusEffectValues3[0] !== undefined && bonusEffectValues3[0] !== "") {
+    newContent20 = ":&#123;&#123;green|"+bonusEffectValues3[0]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames3[0])+"<br>";
+  } else {
+    newContent20 = undefined;
+  }
+
+  if (bonusEffectValues3[1] !== undefined && bonusEffectValues3[1] !== "") {
+    newContent21 = ":&#123;&#123;green|"+bonusEffectValues3[1]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames3[1])+"<br>";
+  } else {
+    newContent21 = undefined;
+  }
+
+  if (bonusEffectValues3[2] !== undefined && bonusEffectValues3[2] !== "") {
+    newContent22 = ":&#123;&#123;green|"+bonusEffectValues3[2]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames3[2])+"<br>";
+  } else {
+    newContent22 = undefined;
+  }
+
+  newContent23 = "|idea3icon="+wikiIconNames(effectNames[4])+"<br>";
+
+  //Fourth Idea
+
+  newContent24 = "|idea4="+ideaNames[3]+"<br>";
+
+  ///////////// Checking if this is a boolean item
+
+  if (booleanItems.indexOf(effectNames[5]) > -1) {
+
+    newContent25 = "|idea4effect="+booleanName(effectNames[5])+"<br>";
+
+  } else {
+
+    newContent25 = "|idea4effect=&#123;&#123;green|"+effectValues[5]+"|b&#125;&#125; "+dlcCheck(effectNames[5])+"<br>";
+
+  }
+
+  ////////////
+
+  if (bonusEffectValues4[0] !== undefined && bonusEffectValues4[0] !== "") {
+    newContent26 = ":&#123;&#123;green|"+bonusEffectValues4[0]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames4[0])+"<br>";
+  } else {
+    newContent26 = undefined;
+  }
+
+  if (bonusEffectValues4[1] !== undefined && bonusEffectValues4[1] !== "") {
+    newContent27 = ":&#123;&#123;green|"+bonusEffectValues4[1]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames4[1])+"<br>";
+  } else {
+    newContent27 = undefined;
+  }
+
+  if (bonusEffectValues4[2] !== undefined && bonusEffectValues4[2] !== "") {
+    newContent28 = ":&#123;&#123;green|"+bonusEffectValues4[2]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames4[2])+"<br>";
+  } else {
+    newContent28 = undefined;
+  }
+
+  newContent29 = "|idea4icon="+wikiIconNames(effectNames[5])+"<br>";
+
+  //Fifth Idea
+
+  newContent30 = "|idea5="+ideaNames[4]+"<br>";
+
+  ///////////// Checking if this is a boolean item
+
+  if (booleanItems.indexOf(effectNames[6]) > -1) {
+
+    newContent31 = "|idea5effect="+booleanName(effectNames[6])+"<br>";
+
+  } else {
+
+    newContent31 = "|idea5effect=&#123;&#123;green|"+effectValues[6]+"|b&#125;&#125; "+dlcCheck(effectNames[6])+"<br>";
+
+  }
+
+  ////////////
+
+  if (bonusEffectValues5[0] !== undefined && bonusEffectValues5[0] !== "") {
+    newContent32 = ":&#123;&#123;green|"+bonusEffectValues5[0]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames5[0])+"<br>";
+  } else {
+    newContent32 = undefined;
+  }
+
+  if (bonusEffectValues5[1] !== undefined && bonusEffectValues5[1] !== "") {
+    newContent33 = ":&#123;&#123;green|"+bonusEffectValues5[1]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames5[1])+"<br>";
+  } else {
+    newContent33 = undefined;
+  }
+
+  if (bonusEffectValues5[2] !== undefined && bonusEffectValues5[2] !== "") {
+    newContent34 = ":&#123;&#123;green|"+bonusEffectValues5[2]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames5[2])+"<br>";
+  } else {
+    newContent34 = undefined;
+  }
+
+  newContent35 = "|idea5icon="+wikiIconNames(effectNames[6])+"<br>";
+
+  //Sixth Idea
+
+  newContent36 = "|idea6="+ideaNames[5]+"<br>";
+
+  ///////////// Checking if this is a boolean item
+
+  if (booleanItems.indexOf(effectNames[7]) > -1) {
+
+    newContent37 = "|idea6effect="+booleanName(effectNames[7])+"<br>";
+
+  } else {
+
+    newContent37 = "|idea6effect=&#123;&#123;green|"+effectValues[7]+"|b&#125;&#125; "+dlcCheck(effectNames[7])+"<br>";
+
+  }
+
+  ////////////
+
+  if (bonusEffectValues6[0] !== undefined && bonusEffectValues6[0] !== "") {
+    newContent38 = ":&#123;&#123;green|"+bonusEffectValues6[0]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames6[0])+"<br>";
+  } else {
+    newContent38 = undefined;
+  }
+
+  if (bonusEffectValues6[1] !== undefined && bonusEffectValues6[1] !== "") {
+    newContent39 = ":&#123;&#123;green|"+bonusEffectValues6[1]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames6[1])+"<br>";
+  } else {
+    newContent39 = undefined;
+  }
+
+  if (bonusEffectValues6[2] !== undefined && bonusEffectValues6[2] !== "") {
+    newContent40 = ":&#123;&#123;green|"+bonusEffectValues6[2]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames6[2])+"<br>";
+  } else {
+    newContent40 = undefined;
+  }
+
+  newContent41 = "|idea6icon="+wikiIconNames(effectNames[7])+"<br>";
+
+  //Seventh Idea
+
+  newContent42 = "|idea7="+ideaNames[6]+"<br>";
+
+  ///////////// Checking if this is a boolean item
+
+  if (booleanItems.indexOf(effectNames[8]) > -1) {
+
+    newContent43 = "|idea7effect="+booleanName(effectNames[8])+"<br>";
+
+  } else {
+
+    newContent43 = "|idea7effect=&#123;&#123;green|"+effectValues[8]+"|b&#125;&#125; "+dlcCheck(effectNames[8])+"<br>";
+
+  }
+
+  ////////////
+
+  if (bonusEffectValues7[0] !== undefined && bonusEffectValues7[0] !== "") {
+    newContent44 = ":&#123;&#123;green|"+bonusEffectValues7[0]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames7[0])+"<br>";
+  } else {
+    newContent44 = undefined;
+  }
+
+  if (bonusEffectValues7[1] !== undefined && bonusEffectValues7[1] !== "") {
+    newContent45 = ":&#123;&#123;green|"+bonusEffectValues7[1]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames7[1])+"<br>";
+  } else {
+    newContent45 = undefined;
+  }
+
+  if (bonusEffectValues7[2] !== undefined && bonusEffectValues7[2] !== "") {
+    newContent46 = ":&#123;&#123;green|"+bonusEffectValues7[2]+"|b&#125;&#125; "+dlcCheck(bonusEffectNames7[2])+"<br>";
+  } else {
+    newContent46 = undefined;
+  }
+
+  newContent47 = "|idea7icon="+wikiIconNames(effectNames[8])+"<br>";
+
+  //Ambition
+
+  ///////////// Checking if this is a boolean item
+
+  if (booleanItems.indexOf(effectNames[9]) > -1) {
+
+    newContent48 = "|bonus="+booleanName(effectNames[9])+"<br>";
+
+  } else {
+
+    newContent48 = "|bonus=&#123;&#123;green|"+effectValues[9]+"|b&#125;&#125; "+dlcCheck(effectNames[9])+"<br>";
+
+  }
+
+  ////////////
+
+  if (ambitionValueBonus !== undefined && ambitionValueBonus !== "") {
+      newContent49 = ":&#123;&#123;green|"+ambitionValueBonus+"|b&#125;&#125; "+dlcCheck(ambitionEffectBonus)+"<br>";
+  }
+
+  //End
+
+  newContent50 = "&#125;&#125;&#60;section end="+countryName+" />"
+
+  //
+  //Making the AlertContainer
+  //
+
+  successSign = "<h4><b>Your code has successfully been generated!</b></h4>Now you can go to the edit page for the <a href='https://eu4.paradoxwikis.com/index.php?title=National_ideas&action=edit'>EU4 National Ideas Wiki</a> and update or add to the content!<br><hr>";
+
+  alertContainer.insertAdjacentHTML('beforeend', successSign);
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent0);
+  alertContainer.insertAdjacentHTML('beforeend', newContent1);
+  alertContainer.insertAdjacentHTML('beforeend', newContent2);
+  alertContainer.insertAdjacentHTML('beforeend', newContent3);
+  alertContainer.insertAdjacentHTML('beforeend', newContent4);
+  alertContainer.insertAdjacentHTML('beforeend', newContent5);
+
+  //First Idea
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent6);
+  alertContainer.insertAdjacentHTML('beforeend', newContent7);
+
+  if (typeof newContent8 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent8);
+  }
+
+  if (typeof newContent9 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent9);
+  }
+
+  if (typeof newContent10 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent10);
+  }
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent11);
+
+  //Second Idea
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent12);
+  alertContainer.insertAdjacentHTML('beforeend', newContent13);
+
+  if (typeof newContent14 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent14);
+  }
+
+  if (typeof newContent15 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent15);
+  }
+
+  if (typeof newContent16 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent16);
+  }
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent17);
+
+  //Third Idea
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent18);
+  alertContainer.insertAdjacentHTML('beforeend', newContent19);
+
+  if (typeof newContent20 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent20);
+  }
+
+  if (typeof newContent21 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent21);
+  }
+
+  if (typeof newContent22 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent22);
+  }
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent23);
+
+  //Fourth Idea
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent24);
+  alertContainer.insertAdjacentHTML('beforeend', newContent25);
+
+  if (typeof newContent26 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent26);
+  }
+
+  if (typeof newContent27 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent27);
+  }
+
+  if (typeof newContent28 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent28);
+  }
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent29);
+
+  //Fifth Idea
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent30);
+  alertContainer.insertAdjacentHTML('beforeend', newContent31);
+
+  if (typeof newContent32 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent32);
+  }
+
+  if (typeof newContent33 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent33);
+  }
+
+  if (typeof newContent34 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent34);
+  }
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent35);
+
+  //Sixth Idea
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent36);
+  alertContainer.insertAdjacentHTML('beforeend', newContent37);
+
+  if (typeof newContent38 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent38);
+  }
+
+  if (typeof newContent39 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent39);
+  }
+
+  if (typeof newContent40 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent40);
+  }
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent41);
+
+  //Seventh Idea
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent42);
+  alertContainer.insertAdjacentHTML('beforeend', newContent43);
+
+  if (typeof newContent44 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent44);
+  }
+
+  if (typeof newContent45 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent45);
+  }
+
+  if (typeof newContent46 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent46);
+  }
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent47);
+
+  //Ambition
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent48);
+
+  if (typeof newContent49 !== 'undefined') {
+    alertContainer.insertAdjacentHTML('beforeend', newContent49);
+  }
+
+  //End
+
+  alertContainer.insertAdjacentHTML('beforeend', newContent50);
+
+  document.getElementById("alertContainer").style.visibility = "visible";
+  document.getElementById("alertContainer").scrollIntoView();
+
+}
+
+function myFunction(containerNumber) {
+
+  if (containerNumber == 1){
+
+    if (counter1 < maxAdditions) {
+
+      counter1 = counter1 + 1;
+      newContent = "<div class='row'><div class='col-5'><br><font color='grey'><p align='right'>Optional Additional Effect</p></font></div><div class='col-2'>Value:<input type='text' id = 'ideaValue1Bonus" + counter1 + "' name = 'ideaValue1Bonus" + counter1 + "' class='form-control' style='color:green; font-weight: bold;'></div><div class='col'>Effect:<input id = 'ideaEffect1Bonus" + counter1 + "' type='text' name = 'ideaEffect1Bonus" + counter1 + "' class='form-control'></div></div></div>";
+      container1.insertAdjacentHTML('beforeend', newContent);
+      autocomplete(document.getElementById("ideaEffect1Bonus" + counter1), countries);
+
+    }
+
+    if (counter1 == maxAdditions) {
+      document.getElementById("containerButton1").parentNode.removeChild(containerButton1);
+    }
+
+  }
+
+  if (containerNumber == 2){
+
+    if (counter2 < maxAdditions) {
+
+      counter2 = counter2 + 1;
+      newContent = "<div class='row'><div class='col-5'><br><font color='grey'><p align='right'>Optional Additional Effect</p></font></div><div class='col-2'>Value:<input type='text' id = 'ideaValue2Bonus" + counter2 + "' name = 'ideaValue2Bonus" + counter2 + "' class='form-control' style='color:green; font-weight: bold;'></div><div class='col'>Effect:<input id = 'ideaEffect2Bonus" + counter2 + "' type='text' name = 'ideaEffect2Bonus" + counter2 + "' class='form-control'></div></div></div>";
+      container2.insertAdjacentHTML('beforeend', newContent);
+      autocomplete(document.getElementById("ideaEffect2Bonus" + counter2), countries);
+
+    }
+
+    if (counter2 == maxAdditions) {
+      document.getElementById("containerButton2").parentNode.removeChild(containerButton2);
+    }
+
+  }
+
+  if (containerNumber == 3){
+
+    if (counter3 < maxAdditions) {
+
+      counter3 = counter3 + 1;
+      newContent = "<div class='row'><div class='col-5'><br><font color='grey'><p align='right'>Optional Additional Effect</p></font></div><div class='col-2'>Value:<input type='text' id = 'ideaValue3Bonus" + counter3 + "' name = 'ideaValue3Bonus" + counter3 + "' class='form-control' style='color:green; font-weight: bold;'></div><div class='col'>Effect:<input id = 'ideaEffect3Bonus" + counter3 + "' type='text' name = 'ideaEffect3Bonus" + counter3 + "' class='form-control'></div></div></div>";
+      container3.insertAdjacentHTML('beforeend', newContent);
+      autocomplete(document.getElementById("ideaEffect3Bonus" + counter3), countries);
+
+    }
+
+    if (counter3 == maxAdditions) {
+      document.getElementById("containerButton3").parentNode.removeChild(containerButton3);
+    }
+
+  }
+
+  if (containerNumber == 4){
+
+    if (counter4 < maxAdditions) {
+
+      counter4 = counter4 + 1;
+      newContent = "<div class='row'><div class='col-5'><br><font color='grey'><p align='right'>Optional Additional Effect</p></font></div><div class='col-2'>Value:<input type='text' id = 'ideaValue4Bonus" + counter4 + "' name = 'ideaValue4Bonus" + counter4 + "' class='form-control' style='color:green; font-weight: bold;'></div><div class='col'>Effect:<input id = 'ideaEffect4Bonus" + counter4 + "' type='text' name = 'ideaEffect4Bonus" + counter4 + "' class='form-control'></div></div></div>";
+      container4.insertAdjacentHTML('beforeend', newContent);
+      autocomplete(document.getElementById("ideaEffect4Bonus" + counter4), countries);
+
+    }
+
+    if (counter4 == maxAdditions) {
+      document.getElementById("containerButton4").parentNode.removeChild(containerButton4);
+    }
+
+  }
+
+  if (containerNumber == 5){
+
+    if (counter5 < maxAdditions) {
+
+      counter5 = counter5 + 1;
+      newContent = "<div class='row'><div class='col-5'><br><font color='grey'><p align='right'>Optional Additional Effect</p></font></div><div class='col-2'>Value:<input type='text' id = 'ideaValue5Bonus" + counter5 + "' name = 'ideaValue5Bonus" + counter5 + "' class='form-control' style='color:green; font-weight: bold;'></div><div class='col'>Effect:<input id = 'ideaEffect5Bonus" + counter5 + "' type='text' name = 'ideaEffect5Bonus" + counter5 + "' class='form-control'></div></div></div>";
+      container5.insertAdjacentHTML('beforeend', newContent);
+      autocomplete(document.getElementById("ideaEffect5Bonus" + counter5), countries);
+
+    }
+
+    if (counter5 == maxAdditions) {
+      document.getElementById("containerButton5").parentNode.removeChild(containerButton5);
+    }
+
+  }
+
+  if (containerNumber == 6){
+
+    if (counter6 < maxAdditions) {
+
+      counter6 = counter6 + 1;
+      newContent = "<div class='row'><div class='col-5'><br><font color='grey'><p align='right'>Optional Additional Effect</p></font></div><div class='col-2'>Value:<input type='text' id = 'ideaValue6Bonus" + counter6 + "' name = 'ideaValue6Bonus" + counter6 + "' class='form-control' style='color:green; font-weight: bold;'></div><div class='col'>Effect:<input id = 'ideaEffect6Bonus" + counter6 + "' type='text' name = 'ideaEffect6Bonus" + counter6 + "' class='form-control'></div></div></div>";
+      container6.insertAdjacentHTML('beforeend', newContent);
+      autocomplete(document.getElementById("ideaEffect6Bonus" + counter6), countries);
+
+    }
+
+    if (counter6 == maxAdditions) {
+      document.getElementById("containerButton6").parentNode.removeChild(containerButton6);
+    }
+
+  }
+
+  if (containerNumber == 7) {
+
+    if (counter7 < maxAdditions) {
+
+      counter7 = counter7 + 1;
+      newContent = "<div class='row'><div class='col-5'><br><font color='grey'><p align='right'>Optional Additional Effect</p></font></div><div class='col-2'>Value:<input type='text' id = 'ideaValue7Bonus" + counter7 + "' name = 'ideaValue7Bonus" + counter7 + "' class='form-control' style='color:green; font-weight: bold;'></div><div class='col'>Effect:<input id = 'ideaEffect7Bonus" + counter7 + "' type='text' name = 'ideaEffect7Bonus" + counter7 + "' class='form-control'></div></div></div>";
+      container7.insertAdjacentHTML('beforeend', newContent);
+      autocomplete(document.getElementById("ideaEffect7Bonus" + counter7), countries);
+
+    }
+
+    if (counter7 == maxAdditions) {
+      document.getElementById("containerButton7").parentNode.removeChild(containerButton7);
+    }
+
+  }
+}
+
+function autocomplete(inp, arr) {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+          b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function (e) {
+      closeAllLists(e.target);
+  });
+}
+
+/*An array containing all the country names in the world:*/
+var countries = [
+  "Administrative efficiency",
+  "Administrative free policies",
+  "Administrative technology cost",
+  "Advisor cost",
+  "Aggressive expansion impact",
+  "Ambition",
+  "Artillery combat ability",
+  "Artillery cost",
+  "Artillery fire",
+  "Attrition to enemies",
+  "Auto explore adjacent to colony",
+  "Autonomy change cooldown",
+  "Available mercenaries",
+  "Caravan power",
+  "Cavalry combat ability",
+  "Cavalry cost",
+  "Cavalry flanking ability",
+  "Cb on primatives",
+  "Cb on religious enemies",
+  "Chance of a new heir",
+  "Chance to capture enemy ships",
+  "Claim colony",
+  "Colonial range",
+  "Colonists",
+  "Construction cost",
+  "Core-creation cost",
+  "Cost of advisors with ruler culture",
+  "Cost of reducing war exhaustion",
+  "Cost to fabricate claims",
+  "Culture conversion cost",
+  "Development cost",
+  "Devotion",
+  "Diplomat",
+  "Diplomatic annexation cost",
+  "Diplomatic free policies",
+  "Diplomatic possible policies",
+  "Diplomatic relations",
+  "Diplomatic reputation",
+  "Diplomatic technology cost",
+  "Discipline",
+  "Embargo efficiency",
+  "Envoy travel time",
+  "Fire damage received",
+  "Foreign spy detection",
+  "Fort defense",
+  "Fort maintenance",
+  "Fort maintenance on border with rival",
+  "Galley combat ability",
+  "Galley cost",
+  "Garrison size",
+  "Global settler increase",
+  "Global tariffs",
+  "Global trade power",
+  "Goods produced modifier",
+  "Harsh treatment cost",
+  "Heavy ship combat ability",
+  "Heavy ship cost",
+  "Hostile core creation cost",
+  "Idea cost",
+  "Imperial authority growth modifier",
+  "Improve relations",
+  "Income from vassals",
+  "Infantry combat ability",
+  "Infantry cost",
+  "Institution spread",
+  "Interest per annum",
+  "Land attrition",
+  "Land fire damage",
+  "Land force limit modifier",
+  "Land leader fire",
+  "Land leader maneuver",
+  "Land leader shock",
+  "Land maintenance modifier",
+  "Leader siege",
+  "Leaders without upkeep",
+  "Liberty desire in subjects",
+  "Light ship combat ability",
+  "Light ship cost",
+  "Looting speed",
+  "Mandate growth modifier",
+  "Manpower recovery speed",
+  "Max promoted cultures",
+  "May explore",
+  "May raid coasts",
+  "Mercenary cost",
+  "Mercenary discipline",
+  "Mercenary maintenance",
+  "Merchants",
+  "Merchant trade power",
+  "Military free policies",
+  "Military technology cost",
+  "Missionaries",
+  "Missionary strength",
+  "Missionary strength against heretics",
+  "Monthly autonomy change",
+  "Monthly fervor",
+  "Monthly piety",
+  "Monthly church power",
+  "Monthly war exhausion",
+  "Morale hit when losing a ship",
+  "Morale of armies",
+  "Morale of navies",
+  "Movement speed",
+  "National garrison growth",
+  "National manpower modifier",
+  "National sailors modifier",
+  "National tax modifier",
+  "National unrest",
+  "Native uprising chance",
+  "Naval attrition",
+  "Naval force limit modifier",
+  "Naval leader fire",
+  "Naval leader maneuver",
+  "Naval leader shock",
+  "Naval maintenance modifier",
+  "No religion penalty",
+  "Number of states",
+  "Possible advisors",
+  "Possible manchu banners",
+  "Possible policies",
+  "Power projection from insults",
+  "Prestige from land battles",
+  "Privateer efficiency",
+  "Production efficiency",
+  "Province war score cost",
+  "Provincial trade power modifier",
+  "Rebel support efficiency",
+  "Recover army morale speed",
+  "Recruitment time",
+  "Regiment cost",
+  "Reinforce cost",
+  "Reinforce speed",
+  "Religious unity",
+  "Sailor recovery speed",
+  "Shipbuilding time",
+  "Ship cost",
+  "Ship durability",
+  "Ship trade power",
+  "Shock damage",
+  "Shock damage received",
+  "Siege ability",
+  "Spy network construction",
+  "Stability cost modifier",
+  "State maintenance",
+  "Technology cost",
+  "Tolerance heathens",
+  "Tolerance heretics",
+  "Tolerance own",
+  "Trade efficiency",
+  "Trade power",
+  "Trade power abroad",
+  "Trade range",
+  "Trade steering",
+  "Traditions",
+  "Unjustified demands",
+  "Vassal forcelimit bonus",
+  "War exhaustion",
+  "Yearly absolutism",
+  "Yearly army tradition",
+  "Yearly army tradition decay",
+  "Yearly corruption",
+  "Yearly devotion",
+  "Yearly horde unity",
+  "Yearly inflation reduction",
+  "Yearly legitimacy",
+  "Yearly meritocracy",
+  "Yearly navy tradition",
+  "Yearly navy tradition decay",
+  "Yearly papal influence",
+  "Yearly prestige",
+  "Yearly prestige decay",
+  "Yearly republican tradition",
+  "Yearly tribal allegiance",
+  "Years of separatism"
+  ];
+
+/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+autocomplete(document.getElementById("traditionEffect1"), countries);
+autocomplete(document.getElementById("traditionEffect2"), countries);
+
+autocomplete(document.getElementById("ideaEffect1"), countries);
+autocomplete(document.getElementById("ideaEffect2"), countries);
+autocomplete(document.getElementById("ideaEffect3"), countries);
+autocomplete(document.getElementById("ideaEffect4"), countries);
+autocomplete(document.getElementById("ideaEffect5"), countries);
+autocomplete(document.getElementById("ideaEffect6"), countries);
+autocomplete(document.getElementById("ideaEffect7"), countries);
+
+autocomplete(document.getElementById("ideaEffect7Bonus1"), countries);
+autocomplete(document.getElementById("ideaEffect7Bonus2"), countries);
+autocomplete(document.getElementById("ideaEffect7Bonus3"), countries);
+
+autocomplete(document.getElementById("ambitionEffect"), countries);
+autocomplete(document.getElementById("ambitionEffectBonus"), countries);
+
+
+
+</script>
+
+{% endblock %}
